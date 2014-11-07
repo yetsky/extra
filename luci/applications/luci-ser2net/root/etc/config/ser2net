@@ -1,0 +1,8 @@
+
+config proxy
+	option tcpport '8000'
+	option device '/dev/ttyUSB0'
+	option state 'off'
+	option timeout '0'
+	option options '9600 1STOPBIT 8DATABITS'
+

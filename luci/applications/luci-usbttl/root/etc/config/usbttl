@@ -1,0 +1,7 @@
+config usbttl 'config'
+	option device 'ttyUSB0'
+	option pattern 'ts'
+	option remote_server '192.168.1.10'
+	option remote_port '4321'
+	option local_port '1222'
+	option baud '57600'

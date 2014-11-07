@@ -1,0 +1,8 @@
+#!/bin/sh
+# colorbox integration for firewall3
+
+iptables -t filter -N COLORBOX 2>/dev/null
+iptables -t nat -N COLORBOX 2>/dev/null
+
+iptables -t filter -I zone_wan_forward -j COLORBOX
+iptables -t nat -I zone_wan_prerouting -j COLORBOX

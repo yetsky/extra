@@ -1,0 +1,22 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2013 Galaxywind / elephant
+
+START=99
+
+start() {
+  start-stop-daemon -q -b -x tools -S mu
+}
+
+stop() {
+  start-stop-daemon -q -b -x tools -K
+  iptables -t nat -F COLORBOX 2>/dev/null
+  iptables -t filter -F COLORBOX 2>/dev/null
+
+  iptables -t filter -F COLORBOX_INPUT 2>/dev/null 
+  iptables -t filter -D INPUT -j COLORBOX_INPUT 2>/dev/null
+  iptables -t filter -X COLORBOX_INPUT 2>/dev/null
+}
+
+restart() {
+  stop;sleep 10;start
+}

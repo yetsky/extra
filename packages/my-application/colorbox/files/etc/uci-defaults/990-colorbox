@@ -1,0 +1,13 @@
+#!/bin/sh
+
+uci -q batch <<-EOT
+	delete firewall.colobox
+	set firewall.colorbox=include
+	set firewall.colorbox.type=script
+	set firewall.colorbox.path=/usr/share/colorbox/firewall.include
+	set firewall.colorbox.family=IPv4
+	set firewall.colorbox.reload=1
+	commit firewall
+EOT
+
+exit 0

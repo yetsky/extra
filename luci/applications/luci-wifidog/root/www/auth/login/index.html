@@ -1,0 +1,81 @@
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>免费无线WIFI认证</title><link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="css/style.css">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0">
+<meta name="format-detection" content="telephone=no">
+<meta name="MobileOptimized" content="320">
+<script>
+  var now=new Date();
+  var number=now.getSeconds()*now.getMinutes()*now.getHours()*now.getDate()*now.getYear()+Math.floor(Math.random()*10099+99);
+  var url=window.location.host;
+function getPar(par){
+//获取当前URL
+var local_url = document.location.href;
+//获取要取得的get参数位置
+var get = local_url.indexOf(par +"=");
+if(get == -1){
+return false;  
+}  
+//截取字符串
+var get_par = local_url.slice(par.length + get + 1);   
+//判断截取后的字符串是否还有其他get参数
+var nextPar = get_par.indexOf("&");
+if(nextPar != -1){
+get_par = get_par.slice(0, nextPar);
+}
+return get_par;
+}
+var web='http://'+url+':'+getPar('gw_port')+'/wifidog/auth?token='+number
+</script>
+</head>
+<body>
+<div class="wrap shop">
+<!--顶部 start-->
+<header class="header">
+<a href="javascript:void(0)" class="logo"><img src="images/logo.png"></a>
+<h1 class="title">免费无线WIFI认证</h1>
+</header>
+<!--顶部 end-->
+<!--主体 start-->
+<section class="main">
+<!--flash start-->
+<div class="flash swiper-container" style="width: 640px; height: 360px;">
+<ul class="swiper-wrapper" style="width: 3840px; height: 360px; -webkit-transform: translate3d(-1280px, 0px, 0px); transition: 0.3s; -webkit-transition: 0.3s;">
+<li class="swiper-slide" style="width: 640px; height: 360px;"><a><img src="images/5.jpg">
+<h3>欢迎来蹭网</h3></a></li>
+<li class="swiper-slide swiper-slide-visible swiper-slide-active" style="width: 640px; height: 360px;"><a><img src="images/6.jpg">
+<h3>欢迎来蹭网</h3></a></li>
+<li class="swiper-slide" style="width: 640px; height: 360px;"><a><img src="images/7.jpg">
+<h3>欢迎来蹭网</h3></a></li>
+<li class="swiper-slide" style="width: 640px; height: 360px;"><a><img src="images/8.jpg">
+<h3>欢迎来蹭网</h3></a></li></ul>
+<div class="num"><span class="swiper-pagination-switch"></span><span class="swiper-pagination-switch swiper-visible-switch swiper-active-switch"></span><span class="swiper-pagination-switch"></span><span class="swiper-pagination-switch"></span></div></div>
+<!--flash end-->
+<!--活动提示 start-->
+<div class="hd_tip">说明:本WIFI免费使用,断线后请重新打开认证页面,认证后即可继续上网!</div>
+<!--活动提示 end-->
+<!--服务列表 start-->
+<ul class="list">
+<li><a href="javascript:void(0)" class="l1">资讯</a></li>
+<li><a href="javascript:void(0)" class="l6">关于</a></li>
+<li><a href="javascript:void(0)" class="l2">联系我</a></li>
+</ul>
+<!--服务列表 end-->
+<!--免费上网入口 start-->
+ <a href="#" onclick="this.href=web" class="enter"><em>点击这里免费上网</em></a>
+<!--免费上网入口 end-->
+</section>
+<!--主体 end-->
+<!--底部 start-->
+<footer class="footer">
+<p>&copy;2014 Bluesky QQ:76888484</p>
+</footer>
+<!--底部 end-->
+</div>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/idangerous.swiper-2.0.min.js"></script>
+<script type="text/javascript" src="js/jquery-validate.min.js"></script>
+<script type="text/javascript" src="js/js.js"></script>
+</body>
+</html>

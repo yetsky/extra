@@ -1,0 +1,63 @@
+#!/bin/sh /etc/rc.common
+#QQ:76888484
+
+START=90
+STOP=15
+PIDFILE='/tmp/run/usbttl.pid'
+PIDFILE1='/tmp/run/tty1'
+
+start()
+{
+	config_load "usbttl"
+	local enabled device pattern remote_server remote_port local_port baud tcp guardian
+	
+		config_get enabled config enabled
+		config_get device config device
+		config_get pattern config pattern
+		config_get remote_server config remote_server
+		config_get remote_port config remote_port
+		config_get local_port config local_port
+		config_get baud config baud
+		config_get tcp config tcp
+		config_get guardian config guardian
+		
+
+	[ "$enabled" = '0' ] && {
+		stop
+		exit 0
+	}
+
+#	if [ -f $PIDFILE ]
+#		then
+#			echo "already started: $PIDFILE exists"
+#			return 1
+#	fi
+	
+	[ "$enabled" = '1' ] && {
+		if [ "$pattern" = '0' ];then
+		if [ "$tcp" = '0' ];then
+			socat tcp-listen:$local_port,reuseaddr,fork file:/dev/$device,nonblock,raw,echo=0,waitlock=$PIDFILE1,b$baud &
+		else
+			socat udp-listen:$local_port,reuseaddr,fork file:/dev/$device,nonblock,raw,echo=0,waitlock=$PIDFILE1,b$baud &
+		fi
+		else
+		if [ "$tcp" = '0' ];then
+			socat TCP:$remote_server:$remote_port FILE:/dev/$device,b$baud,raw &
+		else
+			socat UDP:$remote_server:$remote_port FILE:/dev/$device,b$baud,raw &
+		fi
+		fi
+			echo $! > $PIDFILE
+#			screen -d -m /etc/usbttl/startup
+	}
+}
+
+stop()
+{
+	[ -f $PIDFILE ] && {
+		kill -9 `cat $PIDFILE`
+		kill -9 `cat $PIDFILE1`
+		rm $PIDFILE
+		rm PIDFILE1
+	}
+}

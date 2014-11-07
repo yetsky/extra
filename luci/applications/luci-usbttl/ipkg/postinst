@@ -1,0 +1,7 @@
+#!/bin/sh
+[ -n "${IPKG_INSTROOT}" ] || {
+	( . /etc/uci-defaults/luci-usbttl ) && rm -f /etc/uci-defaults/luci-usbttl
+	chmod 755 /etc/init.d/usbttl >/dev/null 2>&1
+	/etc/init.d/usbttl enable >/dev/null 2>&1
+	exit 0
+}

@@ -1,0 +1,31 @@
+echo $$ > /tmp/run/usbttl_start.pid
+if [ -f "/tmp/run/usbttl.pid" ]; then 
+			logger -p user.info -t "USBTTL" "进程守护已启动！"
+set j=2
+while true
+do
+        if [ $(ps | grep `cat /tmp/run/usbttl.pid` | grep -v "grep"| wc -l) -eq 0 ];
+        then
+#			rm /tmp/run/usbttl.pid
+			/etc/init.d/usbttl start
+			let "j=j+1"
+			logger -p user.info -t "USBTTL" "Restart $j"
+            sleep 1s
+        else
+            sleep 10s
+        fi
+done 
+fi
+
+#while [ 1 ] ; do
+#        if [ $(ps | grep `cat /tmp/run/usbttl.pid` | grep -v "grep"| wc -l) -eq 0 ];
+#        then
+#			rm /tmp/run/usbttl.pid
+#			/etc/init.d/usbttl start
+#			logger -p user.info -t "USBTTL" "Restart"
+#            sleep 1s	
+#        else
+#            sleep 3s
+#        fi
+#        done
+#fi

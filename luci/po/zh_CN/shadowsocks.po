@@ -1,0 +1,53 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Bypass IP list"
+msgstr "跳过代理IP列表"
+
+msgid "For example 1.1.1.0/16"
+msgstr "配合全局时使用,比如1.1.1.0/16"
+
+msgid "Enable GFWlise"
+msgstr "启用GFW列表"
+
+msgid "Check the use GFWlist, otherwise the global TCP proxy"
+msgstr "勾选使用GFWlist列表,否则全局TCP代理"
+
+msgid "Cipher Method"
+msgstr "加密方式"
+
+msgid "Enable"
+msgstr "启动"
+
+msgid "Local Port"
+msgstr "本地端口"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Server Setting"
+msgstr "服务器设置"
+
+msgid "Server Address"
+msgstr "服务器地址"
+
+msgid "Server Port"
+msgstr "服务器端口"
+
+msgid "SOCKS5 Proxy"
+msgstr "SOCK5代理"
+
+msgid "Transparent Proxy"
+msgstr "透明代理"
+
+msgid "Transparent Proxy Local Port"
+msgstr "透明代理本地端口"
+
+msgid "shadowsocks"
+msgstr "ShadowSocks"
+
+msgid "shadowsocks is not running"
+msgstr "shadowsocks 未运行"
+
+msgid "shadowsocks is running"
+msgstr "shadowsocks 运行中"

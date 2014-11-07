@@ -1,0 +1,12 @@
+config wifidog 'wifidog'
+	option gateway_id '12345678'
+	option gateway_hostname '192.168.1.1'
+	option gateway_httpport '80'
+	option gateway_path '/auth/'
+	option gateway_connmax '50'
+	option wifidog_enable '0'
+	option enable '0'
+	option gatewayport '2060'
+	option check_interval '60'
+	option client_timeout '5'
+
