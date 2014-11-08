@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <title>MJPG-streamer</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <!--[if IE 6]>
+    <link rel="stylesheet" href="fix.css" type="text/css" />
+    <![endif]-->
+    <script type="text/javascript">
+
+      /* Copyright (C) 2007 Richard Atterer, richard©atterer.net
+       * This program is free software; you can redistribute it and/or modify it
+       * under the terms of the GNU General Public License, version 2. See the file
+       * COPYING for details.
+       */
+
+      var imageNr = 0; // Serial number of current image
+      var finished = new Array(); // References to img objects which have finished downloading
+      var paused = false;
+      var previous_time = new Date();
+
+      function createImageLayer() {
+        var img = new Image();
+        img.style.position = "absolute";
+        img.style.zIndex = -1;
+        img.onload = imageOnload;
+        img.onclick = imageOnclick;
+        img.width = 512;
+        img.height = 384;
+        img.src = "/?action=snapshot&n=" + (++imageNr);
+        var webcam = document.getElementById("webcam");
+        webcam.insertBefore(img, webcam.firstChild);
+      }
+
+      // Two layers are always present (except at the very beginning), to avoid flicker
+      function imageOnload() {
+        this.style.zIndex = imageNr; // Image finished, bring to front!
+        while (1 < finished.length) {
+          var del = finished.shift(); // Delete old image(s) from document
+          del.parentNode.removeChild(del);
+        }
+        finished.push(this);
+        current_time = new Date();
+        delta = current_time.getTime() - previous_time.getTime();
+        fps   = (1000.0 / delta).toFixed(3);
+        document.getElementById('info').firstChild.nodeValue = delta + " ms (" + fps + " fps)";
+        previous_time = current_time;
+        if (!paused) createImageLayer();
+      }
+
+      function imageOnclick() { // Clicking on the image will pause the stream
+        paused = !paused;
+        if (!paused) createImageLayer();
+      }
+
+    </script>
+    <style type="text/css">
+<!--
+.STYLE1 {color: #FF0000}
+-->
+    </style>
+</head>
+
+  <body onload="createImageLayer();">
+    <div id="sidebar">
+      <h1>MJPG&#27969;&#20809;&#31034;&#33539;&#39029;&#38754;</h1>
+      <h2>&#26356;&#22810;&#31934;&#24425;&#20869;&#23481;&#23613;&#22312;:</h2>
+      <h2 class="STYLE1">QQ&#32676;&#65306;167287317</h2>
+      <div id="menu"><a class="active" href="index.html">&#39318;&#39029;</a> <a href="static.html">&#38745;&#24577;</a> <a href="stream.html">&#21160;&#24577;</a> <a href="java.html">Java</a> <a href="javascript.html">Javascript</a> <a target="_blank" onclick="window.open(this.href, '_blank','width=400,height=400'); return false;" href="control.htm">&#25511;&#21046;</a></div>
+      <h3>&#29256;&#26412;&#20449;&#24687;&#65306;</h3>
+      <p>V0.1&#65288;OKT 22&#26085;&#65292;20012&#24180;</p>
+      <h3>Runtime info:</h3>
+      <p id="info">-</p>
+  </div>
+
+    <div id="content">
+      <h1>&#20351;&#29992;Javascript</h1>
+      <h2>&#29992;javascript&#26174;&#31034;&#27969;</h2>
+      <h3>&#25552;&#31034;</h3>
+      <p>&#36825;&#20010;&#20363;&#23376;&#26174;&#31034;&#20102;&#20351;&#29992;Java&#33050;&#26412;&#27969;&#12290;&#23427;&#30340;&#24037;&#20316;&#21407;&#29702;&#19982;&#22823;&#22810;&#25968;&#27983;&#35272;&#22120;&#12290;&#30475;&#19968;&#20010;&#31616;&#21333;&#30340;&#20363;&#23376;&#65292;&#35831;&#28857;&#20987;<a href="http://192.168.1.1:8080/javascript_simple.html">&#36825;&#37324;</a>&#12290;</p>
+      <div id="webcam" style="width:512px;height:394px"><noscript><img src="/?action=snapshot" width="512px" height="384px" /></noscript></div>
+
+      <p>&copy;&#35813;&#30340;<a href="http://mjpg-streamer.sf.net/">MJPG&#27969;&#20809;&#22242;&#38431;</a>&nbsp;|&#35774;&#35745;&#30001;<a href="http://andreasviklund.com/">&#23433;&#24503;&#28872;&#20122;&#26031;Viklund</a> QQ:306766024 </p>
+  </div>
+  </body>
+</html>
+
+

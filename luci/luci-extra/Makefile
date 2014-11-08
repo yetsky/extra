@@ -126,6 +126,9 @@ $(eval $(call application,dnsfilter,DNS-Filter LuCI configuration module,\
 	
 $(eval $(call application,usbttl,LuCI Support for Usb-TTL,\
 	+PACKAGE_luci-app-usbttl:usbttl))
+	
+$(eval $(call application,mjpg-streamer,mjpg streamer luci page,\
+	+PACKAGE_luci-app-mjpg-streamer:mjpg-streamer))
 
 
 ### Compile ###
