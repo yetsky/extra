@@ -1,0 +1,24 @@
+--- a/src/linux/Makefile
++++ b/src/linux/Makefile
+@@ -9,7 +9,6 @@ modules:
+ 	make -C ${KERNEL_DIR} M=$$PWD $@;
+ 
+ modules_install:
+-	make -C ${KERNEL_DIR} M=$$PWD $@;
+ 
+ modules_clean:
+ 	make -C ${KERNEL_DIR} M=$$PWD $@;
+@@ -24,9 +23,9 @@ lib%.o: lib%.c
+ 	$(CC) $(CFLAGS) -fPIC -O2 -Wall -I${KERNEL_DIR}/include -D_INIT=lib$*_init -c -o $@ $<;
+ 
+ install: modules_install libxt_coova.so
+-	mkdir -p $(DESTDIR)/lib/xtables/
+-	cp libxt_coova.so $(DESTDIR)/lib/xtables/
++	mkdir -p $(DESTDIR)/usr/lib/iptables/
++	cp libxt_coova.so $(DESTDIR)/usr/lib/iptables/
+ 
+ distdir:
+ 
+-distclean: clean
+\ No newline at end of file
++distclean: clean

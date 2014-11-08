@@ -1,0 +1,8 @@
+menu "Configuration"
+    depends on PACKAGE_n2n-v2
+
+config CONFIG_N2N_AES_ENCRYPTION
+    bool "Use AES Encryption"
+    default n
+
+endmenu
