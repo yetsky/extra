@@ -1,17 +1,19 @@
+
 config edge
-	option ipaddr		'192.168.6.1'
-	option supernode	'1.1.1.1'
-	option port		'84'
-	option community	'sky'
-	option key		'1234'
-	option route		'1'
-	option enabled  	'1'
-	option mode  	'0'
+	option route '1'
+	option enabled '0'
+	option mode '0'
+	option key '123456'
+	option ipaddr '192.168.6.1'
+	option supernode '42.159.99.50'
+	option port '8090'
+	option mtu '1300'
 
 config supernode
-	option port 		'55'
-	option enabled  	'1'
-	
+	option port '55'
+	option enabled '0'
+
 config supernode2
-	option port 		'56'
-	option enabled  	'1'
+	option port '56'
+	option enabled '0'
+

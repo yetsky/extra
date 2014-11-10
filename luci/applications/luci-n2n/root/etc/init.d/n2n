@@ -19,13 +19,14 @@ config_cb() {
 			config_get community "$cfg" community
 			config_get mode "$cfg" mode
 			config_get key "$cfg" key
+			config_get mut "$cfg" mut
 			config_get_bool route "$cfg" route 0
 
 			
 		if [ "$mode" = '0' ];then
 			[ "$route" = "1" ] && args='-r'
 			if [ "$ipaddr" != "" ]; then
-				edge -f $args -a $ipaddr -c $community -k $key -l ${supernode}:${port}
+				edge -f $args -a $ipaddr -c $community -k $key -l ${supernode}:${port} -M $mtu
 			fi
 		else
 			args="-l ${supernode}:${port}"
@@ -33,7 +34,7 @@ config_cb() {
 			[ "$route" = "1" ] && args="$args -r"
 
 			if [ "$ipaddr" != "" ]; then
-				N2N_KEY="$key" edge2  $args -a $ipaddr -c $community 
+				N2N_KEY="$key" edge2  $args -a $ipaddr -c $community  -M $mtu
 			fi
 		fi
 		;;

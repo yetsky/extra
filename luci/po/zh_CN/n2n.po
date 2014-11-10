@@ -47,6 +47,9 @@ msgstr "N2N Supernode节点设置"
 msgid "N2N_V2 Supernode Settings"
 msgstr "N2N_V2 Supernode节点设置"
 
+msgid "Specify n2n MTU"
+msgstr "N2N MTU值"
+
 msgid "Port"
 msgstr "端口"
 

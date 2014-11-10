@@ -28,6 +28,10 @@ port = s:option(Value, "port", translate("Supernode Port"))
 port.datatype = "range(0,65535)"
 port.optional = false
 
+mtu = s:option(Value, "mtu", translate("Specify n2n MTU"))
+mtu.datatype = "range(0,65535)"
+mtu.optional = false
+
 community = s:option(Value, "community", translate("N2N Community name"))
 community.optional = false
 
