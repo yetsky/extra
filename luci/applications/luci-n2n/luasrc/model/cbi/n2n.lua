@@ -14,9 +14,6 @@ s.anonymous = true
 switch = s:option(Flag, "enabled", translate("Enable"))
 switch.rmempty = false
 
-tunname = s:option(Value, "tunname", translate("TUN desvice name"))
-tunname.optional = false
-
 mode = s:option(ListValue, "mode", translate("Interface mode"))
 mode:value("0","V1")
 mode:value("1","V2")
@@ -46,6 +43,16 @@ switch = s2:option(Flag, "enabled", translate("Enable"))
 switch.rmempty = false
 
 port = s2:option(Value, "port", translate("Port"))
+port.datatype = "range(0,65535)"
+port.optional = false
+
+s3 = m:section(TypedSection, "supernode2", translate("N2N_V2 Supernode Settings"))
+s3.anonymous = true
+
+switch = s3:option(Flag, "enabled", translate("Enable"))
+switch.rmempty = false
+
+port = s3:option(Value, "port", translate("Port"))
 port.datatype = "range(0,65535)"
 port.optional = false
 

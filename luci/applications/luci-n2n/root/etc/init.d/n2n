@@ -10,7 +10,7 @@ config_cb() {
 	local enabled
 	config_get_bool enabled "${cfg}" enabled 1
 	[ "${enabled}" -eq 0 ] && return 1
-
+	
 	case "$configname" in
 		edge)
 			config_get ipaddr "$cfg" ipaddr
@@ -39,14 +39,14 @@ config_cb() {
 		;;
 		supernode)
 			config_get port "$cfg" port
-			config_get mode "$cfg" mode
 			if [ "$port" != "" ]; then
-		if [ "$mode" = '0' ];then
 				supernode -l $port &
-		else
+			fi
+		;;
+		supernode2)
+			config_get port "$cfg" port
+			if [ "$port" != "" ]; then
 				supernode2 -l $port &
-		fi
-
 			fi
 		;;
 	esac
@@ -55,9 +55,15 @@ config_cb() {
 start() {
 	config_load n2n
 }
+
 stop() {
-	killall edge
-	killall supernode
-	killall edge2
-	killall supernode2
+	service_stop /sbin/edge
+	service_stop /sbin/supernode
+	service_stop /sbin/edge2
+	service_stop /sbin/supernode2
+}
+
+restart() {
+	stop
+	start
 }

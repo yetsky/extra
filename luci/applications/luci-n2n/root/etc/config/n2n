@@ -11,4 +11,7 @@ config edge
 config supernode
 	option port 		'55'
 	option enabled  	'1'
-	option mode  	'1'
+	
+config supernode2
+	option port 		'56'
+	option enabled  	'1'
