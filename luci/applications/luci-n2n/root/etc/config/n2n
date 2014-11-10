@@ -1,0 +1,14 @@
+config edge
+	option ipaddr		'192.168.6.1'
+	option supernode	'1.1.1.1'
+	option port		'84'
+	option community	'sky'
+	option key		'1234'
+	option route		'1'
+	option enabled  	'1'
+	option mode  	'0'
+
+config supernode
+	option port 		'55'
+	option enabled  	'1'
+	option mode  	'1'

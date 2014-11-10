@@ -54,20 +54,20 @@ define Package/n2n/install
 	$(INSTALL_DIR) $(1)/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/n2n_v1/edge $(1)/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/n2n_v1/supernode $(1)/sbin/
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_DATA) ./files/n2n_v1.config $(1)/etc/config/n2n
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/n2n_v1.init $(1)/etc/init.d/n2n
+#	$(INSTALL_DIR) $(1)/etc/config
+#	$(INSTALL_DATA) ./files/n2n_v1.config $(1)/etc/config/n2n
+#	$(INSTALL_DIR) $(1)/etc/init.d
+#	$(INSTALL_BIN) ./files/n2n_v1.init $(1)/etc/init.d/n2n
 endef
 
 define Package/n2n_v2/install
 	$(INSTALL_DIR) $(1)/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/n2n_v2/edge $(1)/sbin/edge2
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/n2n_v2/supernode $(1)/sbin/supernode2
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_DATA) ./files/n2n_v2.config $(1)/etc/config/n2n2
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/n2n_v2.init $(1)/etc/init.d/n2n2
+#	$(INSTALL_DIR) $(1)/etc/config
+#	$(INSTALL_DATA) ./files/n2n_v2.config $(1)/etc/config/n2n2
+#	$(INSTALL_DIR) $(1)/etc/init.d
+#	$(INSTALL_BIN) ./files/n2n_v2.init $(1)/etc/init.d/n2n2
 endef
 
 $(eval $(call BuildPackage,n2n))

@@ -1,5 +1,6 @@
 --[[
-N2N Luci configuration page.Made by 981213
+	QQ:76888484
+	http://yetsky.taobao.com/
 ]]--
 
 module("luci.controller.n2n", package.seeall)

@@ -1,6 +1,6 @@
 --[[
---N2N VPN configuration page. Made by 981213
---
+	QQ:76888484
+	http://yetsky.taobao.com/
 ]]--
 
 local fs = require "nixio.fs"
@@ -18,14 +18,11 @@ tunname = s:option(Value, "tunname", translate("TUN desvice name"))
 tunname.optional = false
 
 mode = s:option(ListValue, "mode", translate("Interface mode"))
-mode:value("dhcp")
-mode:value("static")
+mode:value("0","V1")
+mode:value("1","V2")
 
 ipaddr = s:option(Value, "ipaddr", translate("Interface IP address"))
 ipaddr.optional = false
-
-netmask = s:option(Value, "netmask", translate("Interface netmask"))
-netmask.optional = false
 
 supernode = s:option(Value, "supernode", translate("Supernode IP address"))
 supernode.optional = false
