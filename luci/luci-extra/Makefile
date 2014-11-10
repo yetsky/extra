@@ -129,7 +129,9 @@ $(eval $(call application,usbttl,LuCI Support for Usb-TTL,\
 	
 $(eval $(call application,mjpg-streamer,mjpg streamer luci page,\
 	+PACKAGE_luci-app-mjpg-streamer:mjpg-streamer))
-
+	
+$(eval $(call application,n2n,n2n luci page,\
+	+PACKAGE_luci-app-n2n:n2n-v2))
 
 ### Compile ###
 PKG_CONFIG_DEPENDS=$(patsubst %,CONFIG_PACKAGE_%,$(LUCI_BUILD_PACKAGES))
