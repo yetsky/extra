@@ -19,7 +19,7 @@ config_cb() {
 			config_get community "$cfg" community
 			config_get mode "$cfg" mode
 			config_get key "$cfg" key
-			config_get mut "$cfg" mut
+			config_get mtu "$cfg" mtu
 			config_get_bool route "$cfg" route 0
 
 			

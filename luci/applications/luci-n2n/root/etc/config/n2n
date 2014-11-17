@@ -1,13 +1,14 @@
 
 config edge
-	option route '1'
-	option enabled '0'
+	option route '0'
 	option mode '0'
 	option key '123456'
 	option ipaddr '192.168.6.1'
 	option supernode '42.159.99.50'
 	option port '8090'
 	option mtu '1300'
+	option enabled '1'
+	option community 'openwrt'
 
 config supernode
 	option port '55'

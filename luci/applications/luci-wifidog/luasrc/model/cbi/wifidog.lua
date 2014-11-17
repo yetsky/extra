@@ -28,7 +28,7 @@ if fs.access("/usr/bin/wifidog") then
 	
 	wifidog_enable = s:taboption("jbsz",Flag, "wifidog_enable", 
 	translate("启用认证"),
-	translate("打开或关闭认证[删除MWAN3软件后再启用]"))
+	translate("打开或关闭认证[禁用负载均衡后使用]"))
 	--wifi_enable.default = wifi_enable.enable
 	--wifi_enable.optional = true
 	wifidog_enable.rmempty=false
