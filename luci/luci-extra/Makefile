@@ -124,6 +124,11 @@ $(eval $(call application,dnsfilter,DNS-Filter LuCI configuration module,\
 	+PACKAGE_luci-app-dnsfilter:screen \
 	+PACKAGE_luci-app-dnsfilter:wget))
 	
+$(eval $(call application,mwan3,LuCI support for the MWAN3 multiwan hotplug script,\
+	+PACKAGE_luci-app-mwan3:luci-mod-admin-full \
+	+PACKAGE_luci-app-mwan3:luci-app-firewall \
+	+PACKAGE_luci-app-mwan3:luci-lib-nixio))
+	
 $(eval $(call application,usbttl,LuCI Support for Usb-TTL,\
 	+PACKAGE_luci-app-usbttl:usbttl))
 	
