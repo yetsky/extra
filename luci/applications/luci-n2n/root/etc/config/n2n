@@ -7,7 +7,7 @@ config edge
 	option supernode '42.159.99.50'
 	option port '8090'
 	option mtu '1300'
-	option enabled '1'
+	option enabled '0'
 	option community 'openwrt'
 
 config supernode
