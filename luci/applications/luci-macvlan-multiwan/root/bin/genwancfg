@@ -1,0 +1,50 @@
+#!/bin/ash 
+
+pppoe_name=$(uci get network.wan.username) 
+pppoe_pw=$(uci get network.wan.password)
+#pppoe_metric=$(uci get network.wan.metric) 
+wannum=$(uci get macvlan.config.wannum)
+ENABLED=$(uci get macvlan.config.enabled)
+sh /tmp/rmcfg.sh
+[ "$ENABLED" == "0" ] && {
+	echo "MACVLAN is disabled.STOP generating anythong."
+	/etc/init.d/network restart
+	/etc/init.d/firewall restart
+	/etc/init.d/multiwan restart
+	return 0
+}
+
+/etc/init.d/macvlan start
+#enable multiwan
+uci set multiwan.config.enabled=1
+for i in $(seq 1 $wannum)
+do
+	#gen wan if
+	uci set network.vwan${i}=interface
+	uci set network.vwan${i}.ifname=vth${i}
+	uci set network.vwan${i}.proto=pppoe
+	uci set network.vwan${i}.username=$pppoe_name
+	uci set network.vwan${i}.password=$pppoe_pw
+#	uci set network.vwan${i}.metric=$((pppoe_metric+i))
+	#gen /etc/config/dhcp
+	uci set dhcp.vth${i}=dhcp 
+	uci set dhcp.vth${i}.interface=vwan${i}
+	uci set dhcp.vth${i}.ignore=1 
+	#gen firewall
+	uci add_list firewall.@zone[1].network=vwan$i
+	#gen multiwan if config
+	uci set multiwan.vwan${i}=interface
+	uci set multiwan.vwan${i}.weight=10
+	uci set multiwan.vwan${i}.health_interval=10
+	uci set multiwan.vwan${i}.icmp_hosts=dns
+	uci set multiwan.vwan${i}.timeout=3
+	uci set multiwan.vwan${i}.health_fail_retries=3
+	uci set multiwan.vwan${i}.health_recovery_retries=5
+	uci set multiwan.vwan${i}.failover_to=balancer
+	uci set multiwan.vwan${i}.dns='114.114.114.114 114.114.115.115'
+done
+
+uci commit
+/etc/init.d/network restart
+/etc/init.d/firewall restart
+/etc/init.d/multiwan restart
