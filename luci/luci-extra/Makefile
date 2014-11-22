@@ -148,6 +148,15 @@ $(eval $(call application,mjpg-streamer,mjpg streamer luci page,\
 $(eval $(call application,n2n,n2n luci page,\
 	+PACKAGE_luci-app-n2n:n2n-v2))
 
+$(eval $(call application,webshell,webshell configuration module,\
+	 +PACKAGE_luci-app-webshell))
+	 
+$(eval $(call application,cpulimit,CPULIMIT configuration module,\
+	 +PACKAGE_luci-app-cpulimit:cpulimit))
+	 
+$(eval $(call application,vsftpd,FTP Server,\
+	+PACKAGE_luci-app-vsftpd:vsftpd-pam))
+	
 ### Compile ###
 PKG_CONFIG_DEPENDS=$(patsubst %,CONFIG_PACKAGE_%,$(LUCI_BUILD_PACKAGES))
 
