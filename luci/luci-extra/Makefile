@@ -129,15 +129,13 @@ $(eval $(call application,mwan3,LuCI support for the MWAN3 multiwan hotplug scri
 	+PACKAGE_luci-app-mwan3:luci-mod-admin-full \
 	+PACKAGE_luci-app-mwan3:luci-app-firewall \
 	+PACKAGE_luci-app-mwan3:luci-lib-nixio))
-	
-$(eval $(call application,multiwan,LuCI Support for the OpenWrt MultiWAN agent,luci-app-firewall multiwan))
-	
+
 $(eval $(call application,macvlan-multiwan,LuCI Support for macvlan with multiwan,\
 	+PACKAGE_luci-app-macvlan-multiwan:kmod-macvlan))
-	
+
 $(eval $(call application,macvlan,LuCI Support for macvlan,\
 	+PACKAGE_luci-app-macvlan:kmod-macvlan))
-	
+
 $(eval $(call application,usbttl,LuCI Support for Usb-TTL,\
 	+PACKAGE_luci-app-usbttl:usbttl))
 	
