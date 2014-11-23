@@ -21,17 +21,10 @@ localport = s:option(Value, "localport", translate("Local Port"))
 localport.optional = false
 localport.datatype = "range(0,65535)"
 
-proxytype = s:option(ListValue, "proxytype", translate("Proxy Type"))
-proxytype:value("direct")
-proxytype:value("socks4")
-proxytype:value("socks5")
-proxytype:value("http-connect")
-proxytype:value("http-relay")
-
-autoproxy = s:option(Flag, "autoproxy", translate("AutoProxy"))
+autoproxy = s:option(Flag, "autoproxy", translate("AutoProxy"),'开启先直接访问访问超时走代理访问')
 autoproxy.rmempty = false
 
-timeout = s:option(Value, "timeout", translate("Timeout"))
+timeout = s:option(Value, "timeout", translate("Timeout"),'开启自动判断后超过时间自动走代理访问')
 timeout.optional = false
 
 proxyip = s:option(Value, "proxyip", translate("Proxy IP"))
@@ -40,6 +33,13 @@ proxyip.optional = false
 proxyport = s:option(Value, "proxyport", translate("Proxy Port"))
 proxyport.optional = false
 proxyport.datatype = "range(0,65535)"
+
+proxytype = s:option(ListValue, "proxytype", translate("Proxy Type"))
+proxytype:value("direct")
+proxytype:value("socks4")
+proxytype:value("socks5")
+proxytype:value("http-connect")
+proxytype:value("http-relay")
 
 blacklist_enable = s:option(Flag, "blacklist_enabled", translate("Bypass Lan IP"))
 blacklist_enable.default = false

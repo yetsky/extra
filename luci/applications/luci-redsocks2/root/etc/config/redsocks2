@@ -5,6 +5,6 @@ config redsocks2 config
 	option autoproxy '0'
 	option timeout '5'
 	option proxyip '127.0.0.1'
-	option proxyport '10000'
+	option proxyport '7070'
 	option whitelist_enabled '0'
 	option blacklist_enabled '0'
