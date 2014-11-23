@@ -139,6 +139,9 @@ $(eval $(call application,macvlan,LuCI Support for macvlan,\
 $(eval $(call application,usbttl,LuCI Support for Usb-TTL,\
 	+PACKAGE_luci-app-usbttl:usbttl))
 	
+$(eval $(call application,autossh,LuCI Support for Autossh,\
+	+PACKAGE_luci-app-autossh:autossh))
+	
 $(eval $(call application,xunlei,LuCI Support for xware web UI,\
 	+PACKAGE_luci-app-xunlei:xunlei))
 	
