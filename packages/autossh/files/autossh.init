@@ -1,0 +1,48 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2007-2011 OpenWrt.org
+
+START=80
+
+start_instance() {
+	local section="$1"
+
+	config_get ssh "$section" 'ssh'
+	config_get gatetime "$section" 'gatetime'
+	config_get monitorport "$section" 'monitorport'
+	config_get poll "$section" 'poll'
+	config_get server "$section" 'server'
+	config_get port "$section" 'port'
+	config_get name "$section" 'name'
+	config_get password "$section" 'password'
+	config_get local_addr "$section" 'local_addr'
+	config_get local_port "$section" 'local_port'
+	config_get enabled "$section" 'enabled'
+	
+	[ "$enabled" = '0' ] && {
+		stop
+		exit 0
+	}
+	
+	[ "$enabled" = '1' ] && {
+	export AUTOSSH_PATH="/usr/bin/ssh"
+	export OPENSSH_PASSWORD="$password"
+	AUTOSSH_GATETIME="${gatetime:-30}" \
+	AUTOSSH_POLL="${poll:-600}" \
+	service_start /usr/sbin/autossh -M ${monitorport:-20000} -f ${ssh} ${local_addr}:${local_port} ${name}@${server} -p ${port}
+	}
+}
+
+
+
+boot() {
+	return
+}
+
+start() {
+	config_load 'autossh'
+	config_foreach start_instance 'autossh'
+}
+
+stop() {
+	service_stop /usr/sbin/autossh
+}
