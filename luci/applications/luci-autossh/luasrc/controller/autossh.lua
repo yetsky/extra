@@ -14,7 +14,7 @@ function index()
 	local page
 	page = node("admin", "gfw")
 	page.target = firstchild()
-	page.title = _("Ìİ×Ó")
+	page.title = _("æ¢¯å­")
 	page.order  = 64
 
 	page = entry({"admin", "gfw", "autossh"}, cbi("autossh"), _("SSH-SOCKS5"), 1)
