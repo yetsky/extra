@@ -1,0 +1,30 @@
+
+config main
+	option down '81920'
+	option up '81920'
+	option enable '1'
+
+config ip-qos 'main'
+	option enable '1'
+	option down '10240'
+	option up '10240'
+
+config ip-limit
+	option enable '1'
+	option ip '192.168.1.100'
+	option upc '256'
+	option downc '1024'
+	option upr '512'
+	option downr '2048'
+
+config connlmt
+	option enable '1'
+	option ip '192.168.1.100'
+	option tcp '200'
+	option udp '100'
+
+config port_first
+	option enable '1'
+	option proto 'tcp'
+	option port '80'
+

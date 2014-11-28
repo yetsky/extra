@@ -1,0 +1,13 @@
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
+          delete ucitrack.@ip-qos[-1]
+          add ucitrack ip-qos
+          set ucitrack.@ip-qos[-1].init=ip-qos
+          commit ucitrack
+EOF
+chmod 755 /etc/init.d/ip-qos
+chmod 755 /etc/hotplug.d/iface/60-ip-qos
+/etc/init.d/ip-qos enable
+rm -f /tmp/luci-indexcache
+exit 0

@@ -1,0 +1,18 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+
+start(){
+/usr/bin/ip-qos start
+}
+
+stop(){
+/usr/bin/ip-qos stop
+}
+restart(){
+/usr/bin/ip-qos stop
+/usr/bin/ip-qos start
+}
+
+
+

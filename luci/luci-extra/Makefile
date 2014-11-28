@@ -129,6 +129,16 @@ $(eval $(call application,mwan3,LuCI support for the MWAN3 multiwan hotplug scri
 	+PACKAGE_luci-app-mwan3:luci-mod-admin-full \
 	+PACKAGE_luci-app-mwan3:luci-app-firewall \
 	+PACKAGE_luci-app-mwan3:luci-lib-nixio))
+	
+$(eval $(call application,ip-qos,LuCI support for ip-qos,\
+	+PACKAGE_luci-app-ip-qos:libc \
+	+PACKAGE_luci-app-ip-qos:tc \
+	+PACKAGE_luci-app-ip-qos:iptables-mod-conntrack-extra \
+	+PACKAGE_luci-app-ip-qos:iptables-mod-filter \
+	+PACKAGE_luci-app-ip-qos:iptables-mod-ipopt \
+	+PACKAGE_luci-app-ip-qos:iptables-mod-nat-extra \
+	+PACKAGE_luci-app-ip-qos:kmod-sched \
+	+PACKAGE_luci-app-ip-qos:iptables-mod-iprange))
 
 $(eval $(call application,macvlan-multiwan,LuCI Support for macvlan with multiwan,\
 	+PACKAGE_luci-app-macvlan-multiwan:kmod-macvlan))
