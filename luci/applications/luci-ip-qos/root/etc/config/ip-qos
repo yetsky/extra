@@ -2,7 +2,7 @@
 config main
 	option down '81920'
 	option up '81920'
-	option enable '1'
+	option enable '0'
 
 config ip-qos 'main'
 	option enable '1'
@@ -26,5 +26,5 @@ config connlmt
 config port_first
 	option enable '1'
 	option proto 'tcp'
-	option port '80'
+	option port '22'
 

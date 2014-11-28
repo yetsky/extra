@@ -1,24 +1,23 @@
 --[[
-LuCI - Lua Configuration Interface
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
+QQ:76888484
+http://yetsky.taobao.com/
 ]]--
 
 module("luci.controller.dnsfilter", package.seeall)
 
 function index()
-	require("luci.i18n")
-	luci.i18n.loadc("cpulimit")
+
 	if not nixio.fs.access("/etc/config/dnsfilter") then
 		return
 	end
+	
+	local page
+	page = node("admin", "gfw")
+	page.target = firstchild()
+	page.title = _("ÌÝ×Ó")
+	page.order  = 64
 
-	local page = entry({"admin", "services", "dnsfilter"}, cbi("dnsfilter"), _("dnsfilter"))
+	page = entry({"admin", "gfw", "dnsfilter"}, cbi("dnsfilter"), _("dnsfilter"), 6)
 	page.i18n = "dnsfilter"
 	page.dependent = true
-	
 end

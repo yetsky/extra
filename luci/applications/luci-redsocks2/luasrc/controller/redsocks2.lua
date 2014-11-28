@@ -1,13 +1,17 @@
 --[[
-RA-MOD
+QQ:76888484
+http://yetsky.taobao.com/
 ]]--
 
 module("luci.controller.redsocks2", package.seeall)
 
 function index()
-
 	local page
-	page = entry({"admin", "services", "redsocks2"}, cbi("redsocks2"), _("redsocks2"), 50)
-	page.i18n = "redsocks2"
+	page = node("admin", "gfw")
+	page.target = firstchild()
+	page.title = _("ÌÝ×Ó")
+	page.order  = 64
+
+	page = entry({"admin", "gfw", "redsocks2"}, cbi("redsocks2"), _("redsocks2"), 2)
 	page.dependent = true
 end

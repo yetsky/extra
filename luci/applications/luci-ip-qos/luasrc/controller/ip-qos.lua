@@ -9,7 +9,7 @@ module("luci.controller.ip-qos", package.seeall)
 function index()
 	local fs = require "nixio.fs"
 	if fs.access("/usr/bin/ip-qos") then
-		entry({"admin", "network","ip-qos"}, cbi("ip-qos"), "单IP限速", 4)
+		entry({"admin", "network","ip-qos"}, cbi("ip-qos"), "单IP限速", 500)
 		end
 	
 end
