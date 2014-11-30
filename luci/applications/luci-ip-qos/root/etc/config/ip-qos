@@ -1,15 +1,16 @@
+
 config ip-qos 'main'
 	option enable '0'
-	option down '10240'
-	option up '10240'
+	option down '1280'
+	option up '1280'
 
 config ip-limit
-	option enable '0'
 	option ip '192.168.1.100'
-	option upc '256'
-	option downc '1024'
-	option upr '512'
-	option downr '2048'
+	option enable '0'
+	option upr '20'
+	option upc '50'
+	option downr '100'
+	option downc '200'
 
 config connlmt
 	option enable '0'

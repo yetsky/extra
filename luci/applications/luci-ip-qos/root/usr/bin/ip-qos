@@ -206,11 +206,11 @@ case $1 in
 			config_foreach ip_config_get ip-limit
 			config_foreach connlmt_config_get connlmt
 			config_foreach port_config_get port_first
-			logger -p user.info -t "IP-QOS" "已经启动"
+			logger -p user.info -t "IP-QOS" "宸茬粡鍚姩"
 		}
 	;;
 	stop)
 		qos_stop
-		logger -p user.info -t "IP-QOS" "已经停止"
+		logger -p user.info -t "IP-QOS" "宸茬粡鍋滄"
 	;;
 esac
