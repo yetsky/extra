@@ -49,16 +49,16 @@ echo $DOWN
 	tc qdisc add dev $LAN_IF root handle 1: htb
 	
 	tc class add dev $WAN_IF parent 1: classid 1:2 htb rate $((UP))kbit
-	tc class add dev $LAN_IF parent 1: classid 1:2 htb rate $((DOWN))kbit	#µ¥¶ÀÏÞËÙ
+	tc class add dev $LAN_IF parent 1: classid 1:2 htb rate $((DOWN))kbit
 	
 	echo "ip qdisc end"
 	
-	tc class add dev $WAN_IF parent 1: classid 1:1 htb rate $((UP*95/100))kbit	#žùÀà
-	tc class add dev $WAN_IF parent 1:1 classid 1:11 htb rate $((UP*5/10))kbit prio 1	#Ð¡°ü
-	tc class add dev $WAN_IF parent 1:1 classid 1:12 htb rate $((UP*5/10))kbit ceil $((UP*9/10))kbit prio 2	#ÆäËû°ü
-	tc class add dev $WAN_IF parent 1:12 classid 1:121 htb rate $((UP*4/10))kbit ceil $((UP*8/10))kbit prio 1	#www£¬ftp
-	tc class add dev $WAN_IF parent 1:12 classid 1:122 htb rate $((UP*1/10))kbit ceil $((UP*4/10))kbit prio 2	#bit£¬ÑžÀ×
-	tc class add dev $WAN_IF parent 1:12 classid 1:123 htb rate $((UP*4/10))kbit ceil $((UP*6/10))kbit prio 3	#Ä¬ÈÏ
+	tc class add dev $WAN_IF parent 1: classid 1:1 htb rate $((UP*95/100))kbit
+	tc class add dev $WAN_IF parent 1:1 classid 1:11 htb rate $((UP*5/10))kbit prio 1
+	tc class add dev $WAN_IF parent 1:1 classid 1:12 htb rate $((UP*5/10))kbit ceil $((UP*9/10))kbit prio 2
+	tc class add dev $WAN_IF parent 1:12 classid 1:121 htb rate $((UP*4/10))kbit ceil $((UP*8/10))kbit prio 1
+	tc class add dev $WAN_IF parent 1:12 classid 1:122 htb rate $((UP*1/10))kbit ceil $((UP*4/10))kbit prio 2
+	tc class add dev $WAN_IF parent 1:12 classid 1:123 htb rate $((UP*4/10))kbit ceil $((UP*6/10))kbit prio 3
 	tc qdisc add dev $WAN_IF parent 1:11 handle 11: sfq perturb 10
 	tc qdisc add dev $WAN_IF parent 1:121 handle 121: sfq perturb 10
 	tc qdisc add dev $WAN_IF parent 1:122 handle 122: sfq perturb 10
@@ -69,12 +69,12 @@ echo $DOWN
 	tc filter add dev $WAN_IF parent 1: handle 0x40/0xfff0 fw classid 1:123
 	
 	
-	tc class add dev $LAN_IF parent 1: classid 1:1 htb rate $((DOWN*95/100))kbit	#žùÀà
-	tc class add dev $LAN_IF parent 1:1 classid 1:11 htb rate $((DOWN*5/10))kbit prio 1	#Ð¡°ü
-	tc class add dev $LAN_IF parent 1:1 classid 1:12 htb rate $((DOWN*5/10))kbit ceil $((DOWN*9/10))kbit prio 2	#ÆäËû°ü
-	tc class add dev $LAN_IF parent 1:12 classid 1:121 htb rate $((DOWN*4/10))kbit ceil $((DOWN*8/10))kbit prio 1	#www£¬ftp
-	tc class add dev $LAN_IF parent 1:12 classid 1:122 htb rate $((DOWN*1/10))kbit ceil $((DOWN*4/10))kbit prio 10	#ÎŽ·ÖÀàµÄŽóÊýŸÝ°ü
-	tc class add dev $LAN_IF parent 1:12 classid 1:123 htb rate $((DOWN*4/10))kbit ceil $((DOWN*6/10))kbit prio 3	#Ä¬ÈÏ
+	tc class add dev $LAN_IF parent 1: classid 1:1 htb rate $((DOWN*95/100))kbit
+	tc class add dev $LAN_IF parent 1:1 classid 1:11 htb rate $((DOWN*5/10))kbit prio 1
+	tc class add dev $LAN_IF parent 1:1 classid 1:12 htb rate $((DOWN*5/10))kbit ceil $((DOWN*9/10))kbit prio 2
+	tc class add dev $LAN_IF parent 1:12 classid 1:121 htb rate $((DOWN*4/10))kbit ceil $((DOWN*8/10))kbit prio 1
+	tc class add dev $LAN_IF parent 1:12 classid 1:122 htb rate $((DOWN*1/10))kbit ceil $((DOWN*4/10))kbit prio 10
+	tc class add dev $LAN_IF parent 1:12 classid 1:123 htb rate $((DOWN*4/10))kbit ceil $((DOWN*6/10))kbit prio 3
 	tc qdisc add dev $LAN_IF parent 1:11 handle 11: sfq perturb 10
 	tc qdisc add dev $LAN_IF parent 1:121 handle 121: sfq perturb 10
 	tc qdisc add dev $LAN_IF parent 1:122 handle 122: sfq perturb 10
@@ -112,10 +112,6 @@ echo $DOWN
 }
 
 ip_limit() {
-	#$1 ip, $2 ÏÂÔØ×îŽó, $3 ÏÂÔØ±£Ö€, $4 ÉÏÔØ×îŽó, $5 ÉÏÔØ±£Ö€
-	#
-	#
-	
 	echo $1 
 	echo $2
 	echo $3
@@ -146,7 +142,6 @@ ip_limit() {
 }
 
 connlmt() {
-# $1 ip,$2 tcp $3 udp
 echo $1
 echo $2
 echo $3
@@ -163,8 +158,8 @@ iptables -t mangle -I DOWN -p $1 -m multiport --source-port $2 -j RETURN
 
 }
 
-emong_config_get() {
-	config_get emong_enable main enable
+ipqos_config_get() {
+	config_get ipqos_enable main enable
 	config_get UP main up
 	config_get DOWN main down
 }
@@ -197,10 +192,10 @@ port_config_get() {
 
 load_var
 config_load ip-qos
-emong_config_get
+ipqos_config_get
 case $1 in
 	start) 
-		[ "$emong_enable" = "1" ] && {
+		[ "$ipqos_enable" = "1" ] && {
 			load_modules
 			qos_stop
 			qos_start

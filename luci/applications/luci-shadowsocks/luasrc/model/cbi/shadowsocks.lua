@@ -65,29 +65,7 @@ redir_port.optional = false
 
 blacklist_enable = redir:option(Flag, "blacklist_enabled", translate("Enable GFWlise"),translate("Check the use GFWlist, otherwise the global TCP proxy"))
 blacklist_enable.default = false
---[[
-blacklist = redir:option(TextValue, "blacklist", " ", "")
-blacklist.template = "cbi/tvalue"
-blacklist.size = 30
-blacklist.rows = 10
-blacklist.wrap = "off"
-blacklist:depends("blacklist_enabled", 1)
 
-function blacklist.cfgvalue(self, section)
-	return fs.readfile("/etc/ipset/blacklist") or ""
-end
-function blacklist.write(self, section, value)
-	if value then
-		value = value:gsub("\r\n?", "\n")
-		fs.writefile("/tmp/blacklist", value)
-		fs.mkdirr("/etc/ipset")
-		if (fs.access("/etc/ipset/blacklist") ~= true or luci.sys.call("cmp -s /tmp/blacklist /etc/ipset/blacklist") == 1) then
-			fs.writefile("/etc/ipset/blacklist", value)
-		end
-		fs.remove("/tmp/blacklist")
-	end
-end
-]]--
 
 whitelist_enable = redir:option(Flag, "whitelist_enabled", translate("Bypass IP list"),translate("For example 1.1.1.0/16"))
 whitelist_enable.default = false
