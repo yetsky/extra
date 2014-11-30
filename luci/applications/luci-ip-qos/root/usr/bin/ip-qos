@@ -41,6 +41,8 @@ qos_stop() {
 }
 
 qos_start(){
+UP=$((UP*8))
+DOWN=$((DOWN*8))
 echo $WAN_IF
 echo $LAN_IF
 echo $UP
@@ -63,10 +65,10 @@ echo $DOWN
 	tc qdisc add dev $WAN_IF parent 1:121 handle 121: sfq perturb 10
 	tc qdisc add dev $WAN_IF parent 1:122 handle 122: sfq perturb 10
 	tc qdisc add dev $WAN_IF parent 1:123 handle 123: sfq perturb 10
-	tc filter add dev $WAN_IF parent 1: handle 0x10/0xfff0 fw classid 1:11
-	tc filter add dev $WAN_IF parent 1: handle 0x20/0xfff0 fw classid 1:121
-	tc filter add dev $WAN_IF parent 1: handle 0x30/0xfff0 fw classid 1:122
-	tc filter add dev $WAN_IF parent 1: handle 0x40/0xfff0 fw classid 1:123
+	tc filter add dev $WAN_IF parent 1: handle 0x11 fw classid 1:11
+	tc filter add dev $WAN_IF parent 1: handle 0x21 fw classid 1:121
+	tc filter add dev $WAN_IF parent 1: handle 0x31 fw classid 1:122
+	tc filter add dev $WAN_IF parent 1: handle 0x41 fw classid 1:123
 	
 	
 	tc class add dev $LAN_IF parent 1: classid 1:1 htb rate $((DOWN*95/100))kbit
@@ -112,6 +114,8 @@ echo $DOWN
 }
 
 ip_limit() {
+
+
 	echo $1 
 	echo $2
 	echo $3
@@ -171,7 +175,7 @@ ip_config_get() {
 	config_get upr $1 upr
 	config_get downc $1 downc
 	config_get downr $1 downr
-	[ "$enable" == "1" ] && ip_limit $ip $downc $downr $upc $upr
+	[ "$enable" == "1" ] && ip_limit $ip $((downc*8)) $((downr*8)) $((upc*8)) $((upr*8))
 }
 
 connlmt_config_get() {
@@ -202,9 +206,11 @@ case $1 in
 			config_foreach ip_config_get ip-limit
 			config_foreach connlmt_config_get connlmt
 			config_foreach port_config_get port_first
+			logger -p user.info -t "IP-QOS" "已经启动"
 		}
 	;;
 	stop)
 		qos_stop
+		logger -p user.info -t "IP-QOS" "已经停止"
 	;;
 esac
