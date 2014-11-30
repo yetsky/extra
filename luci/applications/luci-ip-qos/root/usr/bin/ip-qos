@@ -79,10 +79,10 @@ echo $DOWN
 	tc qdisc add dev $LAN_IF parent 1:121 handle 121: sfq perturb 10
 	tc qdisc add dev $LAN_IF parent 1:122 handle 122: sfq perturb 10
 	tc qdisc add dev $LAN_IF parent 1:123 handle 123: sfq perturb 10
-	tc filter add dev $LAN_IF parent 1: handle 0x10/0xfff0 fw classid 1:11
-	tc filter add dev $LAN_IF parent 1: handle 0x20/0xfff0 fw classid 1:121
-	tc filter add dev $LAN_IF parent 1: handle 0x30/0xfff0 fw classid 1:122
-	tc filter add dev $LAN_IF parent 1: handle 0x40/0xfff0 fw classid 1:123
+	tc filter add dev $LAN_IF parent 1: handle 0x11 fw classid 1:11
+	tc filter add dev $LAN_IF parent 1: handle 0x21 fw classid 1:121
+	tc filter add dev $LAN_IF parent 1: handle 0x31 fw classid 1:122
+	tc filter add dev $LAN_IF parent 1: handle 0x41 fw classid 1:123
 	
 	iptables -t mangle -N UP
 	iptables -t mangle -N DOWN
