@@ -151,6 +151,7 @@ $(eval $(call application,usbttl,LuCI Support for Usb-TTL,\
 	
 $(eval $(call application,autossh,LuCI Support for Autossh,\
 	+PACKAGE_luci-app-autossh:autossh))
+	+PACKAGE_luci-app-autossh:openssh-client))
 	
 $(eval $(call application,xunlei,LuCI Support for xware web UI,\
 	+PACKAGE_luci-app-xunlei:xunlei))
