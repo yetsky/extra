@@ -6,29 +6,6 @@ load_var() {
 	LAN_IF=$(uci -p /var/state get network.lan.ifname)
 }
 
-load_modules(){
-[ ! -f /tmp/ip-qos-modules ] && {
-	insmod cls_fw 
-	insmod sch_hfsc 
-	insmod sch_sfq 
-	insmod sch_red 
-	insmod sch_htb 
-	insmod sch_prio 
-	insmod xt_multiport 
-	insmod xt_connmark
-	insmod xt_length 
-	insmod xt_connlimit
-	insmod xt_connbytes
-	insmod xt_connbytes
-	insmod cls_u32
-	insmod em_u32
-	insmod act_connmark
-	insmod sch_ingress
-	insmod act_mirred
-	echo >/tmp/ip-qos-modules
-	}
-}
-
 qos_stop() {
 	tc qdisc del dev $WAN_IF root 2>/dev/null
 	tc qdisc del dev $LAN_IF root 2>/dev/null
@@ -38,6 +15,7 @@ qos_stop() {
 	iptables -t mangle -X DOWN 2>/dev/null
 	iptables -t mangle -X IP_DOWN 2>/dev/null
 	iptables -t mangle -X IP_UP 2>/dev/null
+	logger -p user.info -t "IP-QOS" "已经停止"
 }
 
 qos_start(){
@@ -211,6 +189,5 @@ case $1 in
 	;;
 	stop)
 		qos_stop
-		logger -p user.info -t "IP-QOS" "已经停止"
 	;;
 esac
