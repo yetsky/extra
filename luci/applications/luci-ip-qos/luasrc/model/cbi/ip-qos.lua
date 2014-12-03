@@ -13,8 +13,8 @@ s:tab("template", "脚本编辑")
 s:taboption("general",Flag, "enable", "启动","启动后脚本带部分智能规则，填写实际宽带上行下行带宽")
 
 
-s:taboption("general", Value, "down", "全局上传速度(KB/s)","2Mbps上行宽带=256KB/s")
-s:taboption("general", Value, "up", "全局下载速度(KB/s)","10Mbps下行宽带=1280KB/s")
+s:taboption("general", Value, "up", "全局上传速度(KB/s)","2Mbps上行宽带=256KB/s")
+s:taboption("general", Value, "down", "全局下载速度(KB/s)","10Mbps下行宽带=1280KB/s")
 
 
 tmpl = s:taboption("template", Value, "_tmpl","脚本", "限速脚本")

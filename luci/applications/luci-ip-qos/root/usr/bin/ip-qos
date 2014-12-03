@@ -38,7 +38,7 @@ echo $DOWN
 	tc class add dev $WAN_IF parent 1:1 classid 1:12 htb rate $((UP*5/10))kbit ceil $((UP*9/10))kbit prio 2
 	tc class add dev $WAN_IF parent 1:12 classid 1:121 htb rate $((UP*4/10))kbit ceil $((UP*8/10))kbit prio 1
 	tc class add dev $WAN_IF parent 1:12 classid 1:122 htb rate $((UP*1/10))kbit ceil $((UP*4/10))kbit prio 2
-	tc class add dev $WAN_IF parent 1:12 classid 1:123 htb rate $((UP*4/10))kbit ceil $((UP*6/10))kbit prio 3
+	tc class add dev $WAN_IF parent 1:12 classid 1:123 htb rate $((UP*2/10))kbit ceil $((UP*4/10))kbit prio 3
 	tc qdisc add dev $WAN_IF parent 1:11 handle 11: sfq perturb 10
 	tc qdisc add dev $WAN_IF parent 1:121 handle 121: sfq perturb 10
 	tc qdisc add dev $WAN_IF parent 1:122 handle 122: sfq perturb 10
@@ -54,7 +54,7 @@ echo $DOWN
 	tc class add dev $LAN_IF parent 1:1 classid 1:12 htb rate $((DOWN*5/10))kbit ceil $((DOWN*9/10))kbit prio 2
 	tc class add dev $LAN_IF parent 1:12 classid 1:121 htb rate $((DOWN*4/10))kbit ceil $((DOWN*8/10))kbit prio 1
 	tc class add dev $LAN_IF parent 1:12 classid 1:122 htb rate $((DOWN*1/10))kbit ceil $((DOWN*4/10))kbit prio 10
-	tc class add dev $LAN_IF parent 1:12 classid 1:123 htb rate $((DOWN*4/10))kbit ceil $((DOWN*6/10))kbit prio 3
+	tc class add dev $LAN_IF parent 1:12 classid 1:123 htb rate $((DOWN*2/10))kbit ceil $((DOWN*4/10))kbit prio 3
 	tc qdisc add dev $LAN_IF parent 1:11 handle 11: sfq perturb 10
 	tc qdisc add dev $LAN_IF parent 1:121 handle 121: sfq perturb 10
 	tc qdisc add dev $LAN_IF parent 1:122 handle 122: sfq perturb 10
@@ -63,7 +63,7 @@ echo $DOWN
 	tc filter add dev $LAN_IF parent 1: handle 0x21 fw classid 1:121
 	tc filter add dev $LAN_IF parent 1: handle 0x31 fw classid 1:122
 	tc filter add dev $LAN_IF parent 1: handle 0x41 fw classid 1:123
-	
+
 	iptables -t mangle -N UP
 	iptables -t mangle -N DOWN
 	iptables -t mangle -N IP_UP
@@ -71,24 +71,51 @@ echo $DOWN
 	iptables -t mangle -I FORWARD -o $WAN_IF -j UP
 	iptables -t mangle -I FORWARD -o $LAN_IF -j DOWN
 	
+	iptables -t mangle -I DOWN -p tcp -m tcp --tcp-flags SYN,RST,ACK SYN -j RETURN 
+	iptables -t mangle -I DOWN -p udp -m udp --source-port 53 -j  RETURN
 	iptables -t mangle -I DOWN -p tcp -m multiport --source-port 22,53  -j RETURN
 	iptables -t mangle -I DOWN -p icmp -j RETURN
-	iptables -t mangle -A DOWN -j MARK --set-mark=0x41	
-	iptables -t mangle -A DOWN  -m length --length 1024:1500 -j MARK --set-mark=0x31
+	iptables -t mangle -A DOWN -p tcp -m length --length :128 -j RETURN
+	
+	iptables -t mangle -A DOWN -p tcp -m length --length :512 -j MARK --set-mark=0x11
+	iptables -t mangle -A DOWN -p tcp -m length --length :512 -j RETURN
 	iptables -t mangle -A DOWN -p tcp -m multiport --source-port 21,80,443,3389  -j MARK --set-mark=0x21
-	iptables -t mangle -A DOWN  -m length --length :512 -j MARK --set-mark=0x11
+	iptables -t mangle -A DOWN -p tcp -m multiport --source-port 21,80,443,3389  -j RETURN
+	
+	#iptables -t mangle -A DOWN -p udp -m recent --rcheck --seconds 120 -j MARK --set-mark=0x31
+	#iptables -t mangle -A DOWN -p udp -m recent --rcheck --seconds 120 -j RETURN
+
+	iptables -t mangle -A DOWN -m length --length 1024:1500 -j MARK --set-mark=0x31
+	iptables -t mangle -A DOWN -m length --length 1024:1500 -j RETURN
+	
+	iptables -t mangle -A DOWN -j MARK --set-mark=0x41
+	#iptables -t mangle -A DOWN -j RETURN
+	
 	
 	iptables -t mangle -A DOWN -j IP_DOWN
 	
-	
-	iptables -t mangle -I UP -p tcp -m multiport --source-port 22,53  -j RETURN
+	iptables -t mangle -I UP -p tcp -m tcp --tcp-flags SYN,RST,ACK SYN -j RETURN 
+	iptables -t mangle -I UP -p udp -m udp --dport 53 -j  RETURN
+	iptables -t mangle -I UP -p tcp -m multiport --dport 22,53  -j RETURN
 	iptables -t mangle -I UP -p icmp -j RETURN
-	iptables -t mangle -A UP -j MARK --set-mark=0x41	
-	iptables -t mangle -A UP  -m length --length 1024:1500 -j MARK --set-mark=0x31
-	iptables -t mangle -A UP -p tcp -m multiport --source-port 21,80,443,3389  -j MARK --set-mark=0x21
-	iptables -t mangle -A UP  -m length --length :512 -j MARK --set-mark=0x11
+	iptables -t mangle -A UP -p tcp -m length --length :128 -j RETURN
 	
-	iptables -t mangle -A UP -j IP_UP
+	iptables -t mangle -A UP -p tcp -m length --length :512 -j MARK --set-mark=0x11
+	iptables -t mangle -A UP -p tcp -m length --length :512 -j RETURN
+
+	iptables -t mangle -A UP -p tcp -m multiport --dport 21,80,443,3389  -j MARK --set-mark=0x21
+	iptables -t mangle -A UP -p tcp -m multiport --dport 21,80,443,3389  -j RETURN
+	
+	#iptables -t mangle -A UP -p udp -m recent --rcheck --seconds 120 -j MARK --set-mark=0x31
+	#iptables -t mangle -A UP -p udp -m recent --rcheck --seconds 120 -j RETURN
+
+	iptables -t mangle -A UP -m length --length 1024:1500 -j MARK --set-mark=0x31
+	iptables -t mangle -A UP -m length --length 1024:1500 -j RETURN
+
+	iptables -t mangle -A UP -j MARK --set-mark=0x41	
+	#iptables -t mangle -A UP -j RETURN
+	
+	iptables -t mangle -A UP -j IP_DOWN
 }
 
 ip_limit() {
@@ -127,9 +154,9 @@ connlmt() {
 echo $1
 echo $2
 echo $3
-
-	iptables -t mangle -A FORWARD -p tcp -d $1 -m connlimit --connlimit-above $2 -j DROP
-	iptables -t mangle -A FORWARD -p udp -d $1 -m connlimit --connlimit-above $3 -j DROP
+	
+	iptables -t mangle -A FORWARD -p tcp -s $1 -m connlimit --connlimit-above $2 -j DROP
+	iptables -t mangle -A FORWARD -p udp -s $1 -m connlimit --connlimit-above $3 -j DROP
 
 }
 
@@ -178,7 +205,6 @@ ipqos_config_get
 case $1 in
 	start) 
 		[ "$ipqos_enable" = "1" ] && {
-			load_modules
 			qos_stop
 			qos_start
 			config_foreach ip_config_get ip-limit
