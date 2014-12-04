@@ -63,11 +63,35 @@ redir_port = redir:option(Value, "redir_port", translate("Transparent Proxy Loca
 redir_port.datatype = "range(0,65535)"
 redir_port.optional = false
 
-blacklist_enable = redir:option(Flag, "blacklist_enabled", translate("Enable GFWlise"),translate("Check the use GFWlist, otherwise the global TCP proxy"))
+gfwlist_enable = redir:option(Flag, "gfwlist_enabled", "启用GFW列表","勾选使用GFWlist列表,否则全局TCP代理或者自动判断,不启用会导致部分QOS失效")
+gfwlist_enable.default = false
+
+blacklist_enable = redir:option(Flag, "blacklist_enabled", translate("Bypass Lan IP"),"支持IP或者1.1.1.0/16")
 blacklist_enable.default = false
 
+blacklist = redir:option(TextValue, "blacklist", " ", "")
+blacklist.template = "cbi/tvalue"
+blacklist.size = 30
+blacklist.rows = 10
+blacklist.wrap = "off"
+blacklist:depends("blacklist_enabled", 1)
 
-whitelist_enable = redir:option(Flag, "whitelist_enabled", translate("Bypass IP list"),translate("For example 1.1.1.0/16"))
+function blacklist.cfgvalue(self, section)
+	return fs.readfile("/etc/ipset/blacklist") or ""
+end
+function blacklist.write(self, section, value)
+	if value then
+		value = value:gsub("\r\n?", "\n")
+		fs.writefile("/tmp/blacklist", value)
+		fs.mkdirr("/etc/ipset")
+		if (fs.access("/etc/ipset/blacklist") ~= true or luci.sys.call("cmp -s /tmp/blacklist /etc/ipset/blacklist") == 1) then
+			fs.writefile("/etc/ipset/blacklist", value)
+		end
+		fs.remove("/tmp/blacklist")
+	end
+end
+
+whitelist_enable = redir:option(Flag, "whitelist_enabled", translate("Bypass IP Whitelist"),"支持IP或者1.1.1.0/16")
 whitelist_enable.default = false
 
 whitelist = redir:option(TextValue, "whitelist", " ", "")

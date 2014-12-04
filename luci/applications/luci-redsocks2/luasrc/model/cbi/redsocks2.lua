@@ -21,7 +21,10 @@ localport = s:option(Value, "localport", translate("Local Port"))
 localport.optional = false
 localport.datatype = "range(0,65535)"
 
-autoproxy = s:option(Flag, "autoproxy", translate("AutoProxy"),'开启先直接访问访问超时走代理访问')
+gfwlist_enable = s:option(Flag, "gfwlist_enabled", "启用GFW列表","勾选使用GFWlist列表,否则全局TCP代理或者自动判断,不启用会导致部分QOS失效")
+gfwlist_enable.default = false
+
+autoproxy = s:option(Flag, "autoproxy", translate("AutoProxy"),"开启先直接访问访问超时走代理访问,建议勾选GFWlist选项关闭此选项")
 autoproxy.rmempty = false
 
 timeout = s:option(Value, "timeout", translate("Timeout"),'开启自动判断后超过时间自动走代理访问')
@@ -41,7 +44,7 @@ proxytype:value("socks5")
 proxytype:value("http-connect")
 proxytype:value("http-relay")
 
-blacklist_enable = s:option(Flag, "blacklist_enabled", translate("Bypass Lan IP"))
+blacklist_enable = s:option(Flag, "blacklist_enabled", translate("Bypass Lan IP"),"支持IP或者1.1.1.0/16")
 blacklist_enable.default = false
 
 blacklist = s:option(TextValue, "blacklist", " ", "")
@@ -66,7 +69,7 @@ function blacklist.write(self, section, value)
 	end
 end
 
-whitelist_enable = s:option(Flag, "whitelist_enabled", translate("Bypass IP Whitelist"))
+whitelist_enable = s:option(Flag, "whitelist_enabled", translate("Bypass IP Whitelist"),"支持IP或者1.1.1.0/16")
 whitelist_enable.default = false
 
 whitelist = s:option(TextValue, "whitelist", " ", "")

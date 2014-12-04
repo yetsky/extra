@@ -14,8 +14,7 @@ start() {
 	ulimit -n 4096
 	
 	config_load "shadowsocks"
-	local enabled remote rport lport pass redir_enabled redir_port \
-			whitelist_enabled blacklist_enabled
+	local enabled remote rport lport pass redir_enabled redir_port whitelist_enabled blacklist_enabled gfwlist_enabled
 	config_get enabled config enabled
 	config_get remote config remote_server
 	config_get rport config remote_port
@@ -26,6 +25,7 @@ start() {
 	config_get redir_port config redir_port
 	config_get whitelist_enabled config whitelist_enabled
 	config_get blacklist_enabled config blacklist_enabled
+	config_get gfwlist_enabled config gfwlist_enabled
 
 	[ -z "$remote" ] || [ -z "$rport" ] || [ -z "$lport" ] || [ -z "$pass" ] && {
 		echo "missing parameters. check config"
@@ -65,21 +65,23 @@ start() {
 		iptables -t nat -A SHADOWSOCKS -d 240.0.0.0/4 -j RETURN
 		iptables -t nat -A SHADOWSOCKS -d $remoteip -j RETURN
 
-
-		if [ "$whitelist_enabled" = '1' ];then
-			sed -e "s/^/-A whitelist &/g" -e "1 i\-N whitelist nethash --hashsize 4096" $ipset_whitelist | ipset -R -!
-			iptables -t nat -A SHADOWSOCKS -p tcp -m set ! --match-set whitelist dst -j REDIRECT --to-ports $redir_port
-		else
-			iptables -t nat -A SHADOWSOCKS -p tcp -j REDIRECT --to-ports $redir_port
-		fi
-		
-
-		if [ "$blacklist_enabled" = '1' ];then
-			ipset create gfwlist hash:ip counters timeout 1200
-			iptables -t nat -A zone_lan_prerouting -p tcp -m set --match-set gfwlist dst -j SHADOWSOCKS
-		else
-			iptables -t nat -I zone_lan_prerouting -j SHADOWSOCKS
-		fi
+	[ "$blacklist_enabled" = '1' ] && {
+		sed -e "s/^/-A blacklist &/g" -e "1 i\-N blacklist nethash --hashsize 64" $ipset_blacklist | ipset -R -!
+		iptables -t nat -A SHADOWSOCKS -p tcp -m set --match-set blacklist src -j RETURN
+	}
+	if [ "$whitelist_enabled" = '1' ];then
+		sed -e "s/^/-A whitelist &/g" -e "1 i\-N whitelist nethash --hashsize 4096" $ipset_whitelist | ipset -R -!
+		iptables -t nat -A SHADOWSOCKS -p tcp -m set ! --match-set whitelist dst -j REDIRECT --to-ports "$redir_port"
+	else
+		iptables -t nat -A SHADOWSOCKS -p tcp -j REDIRECT --to-ports "$redir_port"
+	fi
+	
+	if [ "$gfwlist_enabled" = '1' ];then
+		ipset create gfwlist hash:ip counters timeout 1200
+		iptables -t nat -A zone_lan_prerouting -p tcp -m set --match-set gfwlist dst -j SHADOWSOCKS
+	else
+		iptables -t nat -I zone_lan_prerouting -j SHADOWSOCKS
+	fi
 		
 	}
 }
