@@ -63,10 +63,10 @@ redir_port = redir:option(Value, "redir_port", translate("Transparent Proxy Loca
 redir_port.datatype = "range(0,65535)"
 redir_port.optional = false
 
-gfwlist_enable = redir:option(Flag, "gfwlist_enabled", "ÆôÓÃGFWÁĞ±í","¹´Ñ¡Ê¹ÓÃGFWlistÁĞ±í,·ñÔòÈ«¾ÖTCP´úÀí»òÕß×Ô¶¯ÅĞ¶Ï,²»ÆôÓÃ»áµ¼ÖÂ²¿·ÖQOSÊ§Ğ§")
+gfwlist_enable = redir:option(Flag, "gfwlist_enabled", "å¯ç”¨GFWåˆ—è¡¨","å‹¾é€‰ä½¿ç”¨GFWliståˆ—è¡¨,å¦åˆ™å…¨å±€TCPä»£ç†æˆ–è€…è‡ªåŠ¨åˆ¤æ–­,ä¸å¯ç”¨ä¼šå¯¼è‡´éƒ¨åˆ†QOSå¤±æ•ˆ")
 gfwlist_enable.default = false
 
-blacklist_enable = redir:option(Flag, "blacklist_enabled", translate("Bypass Lan IP"),"Ö§³ÖIP»òÕß1.1.1.0/16")
+blacklist_enable = redir:option(Flag, "blacklist_enabled", translate("Bypass Lan IP"),"æ”¯æŒIPæˆ–è€…1.1.1.0/16")
 blacklist_enable.default = false
 
 blacklist = redir:option(TextValue, "blacklist", " ", "")
@@ -91,7 +91,7 @@ function blacklist.write(self, section, value)
 	end
 end
 
-whitelist_enable = redir:option(Flag, "whitelist_enabled", translate("Bypass IP Whitelist"),"Ö§³ÖIP»òÕß1.1.1.0/16")
+whitelist_enable = redir:option(Flag, "whitelist_enabled", translate("Bypass IP Whitelist"),"æ”¯æŒIPæˆ–è€…1.1.1.0/16")
 whitelist_enable.default = false
 
 whitelist = redir:option(TextValue, "whitelist", " ", "")
