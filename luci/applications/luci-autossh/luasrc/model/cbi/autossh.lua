@@ -10,7 +10,7 @@ local fs = require "nixio.fs"
 --local lan_ifname = luci.util.exec("uci get network.lan.ifname")
 
 
-m = Map("autossh", "SSH-SOCKS5通道设置","没事翻翻墙 ，锻炼一下身体！<br>第一次连接一个新的SSH由于无法保存服务器指纹文件，脚本会出错。<br>解决方法很简单，先手动进路由的SSH打命令连接一次就可以了。“ssh ip -p 端口” 输入yes即可。")
+m = Map("autossh", "SSH-SOCKS5通道设置","没事翻翻墙 ，锻炼一下身体！<br>配合RedSocks2可以全局或者自动穿越")
 
 local running=(luci.sys.call("pidof autossh > /dev/null") == 0)
 
