@@ -14,6 +14,13 @@ s.anonymous = true
 
 s:tab("basic",  translate("Basic Settings"))
 ------------------------------------------------------------------------
+button_gfw = s:taboption("basic", Button, "_button_gfw" ,"手动更新GFWlist")
+button_gfw.inputtitle = "手动更新GFWlist"
+button_gfw.inputstyle = "apply"
+function button_gfw.write(self, section)
+	luci.sys.call("screen -S GFW -dm bash gfw update")
+end
+
 button_update = s:taboption("basic", Button, "_button_update" ,translate("Manual Update"))
 button_update.inputtitle = translate("Update filtering rules")
 button_update.inputstyle = "apply"

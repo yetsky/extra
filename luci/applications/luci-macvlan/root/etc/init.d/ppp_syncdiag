@@ -45,8 +45,11 @@ stop() {
 }
 restart()
 {
-    echo "正在重新并发拨号......"
-    killall -9 pppd
+
+	logger -p user.info -t "macvlan" "正在重新并发拨号......等待3秒"
+    /tmp/macvlan_ifdown.sh
+    sleep 2
+	/tmp/macvlan_ifup.sh
     return 0
 }
 restart2()

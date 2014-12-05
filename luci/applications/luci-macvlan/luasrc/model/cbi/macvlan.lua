@@ -35,7 +35,13 @@ diagnum.datatype = "range(0,20)"
 diagnum.optional = false
 
 
-s:option(DummyValue,"opennewwindow" ,"<br /><p align=\"justify\"><script type=\"text/javascript\"></script><input type=\"button\" class=\"cbi-button cbi-button-apply\" value=\""..translate("rediag").."\" onclick=\"window.open('"..luci.dispatcher.build_url("admin", "network", "macvlan_rediag").."')\" /></p>")
+rediag = s:option( Button, "_rediag" ,translate("rediag"))
+rediag.inputtitle = translate("rediag")
+rediag.inputstyle = "apply"
+function rediag.write(self, section)
+	luci.sys.call("/etc/init.d/ppp_syncdiag restart &")
+end
+
 
 local apply = luci.http.formvalue("cbi.apply")
 if apply then
