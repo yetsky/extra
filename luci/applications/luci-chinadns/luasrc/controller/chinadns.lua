@@ -1,23 +1,22 @@
 --[[
-QQ:76888484
-http://yetsky.taobao.com/
+RA-MOD
 ]]--
 
 module("luci.controller.chinadns", package.seeall)
 
 function index()
-
+	
 	if not nixio.fs.access("/etc/config/chinadns") then
 		return
 	end
-	
-	local page
-	page = node("admin", "gfw")
-	page.target = firstchild()
-	page.title = _("梯子")
-	page.order  = 64
 
-	page = entry({"admin", "gfw", "chinadns"}, cbi("chinadns"), _("chinadns"), 5)
+	local page
+	page = node("admin", "RA-MOD")
+	page.target = firstchild()
+	page.title = _("RA-MOD")
+	page.order  = 65
+
+	page = entry({"admin", "RA-MOD", "chinadns"}, cbi("chinadns"), _("chinadns"), 55)
 	page.i18n = "chinadns"
 	page.dependent = true
 end
