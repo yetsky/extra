@@ -115,8 +115,8 @@ $(eval $(call application,redsocks2,LuCI Support for redsocks2,\
 $(eval $(call application,ser2net,ser2net - Serial to network module,\
 	+PACKAGE_luci-app-ser2net:ser2net))
 
-$(eval $(call application,chinadns,LuCI Support for ChinaDNS-C,\
-	+PACKAGE_luci-app-chinadns:ChinaDNS-C))
+$(eval $(call application,chinadns,LuCI Support for ChinaDNS,\
+	+PACKAGE_luci-app-chinadns:ChinaDNS))
 
 $(eval $(call application,dnsfilter,DNS-Filter LuCI configuration module,\
 	+PACKAGE_luci-app-dnsfilter:libc \
