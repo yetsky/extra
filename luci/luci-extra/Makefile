@@ -102,7 +102,7 @@ $(eval $(call application,shadowsocks,LuCI Support for shadowsocks,\
 	+PACKAGE_luci-app-shadowsocks:kmod-ipt-ipset \
 	+PACKAGE_luci-app-shadowsocks:ipset \
 	+PACKAGE_luci-app-shadowsocks:resolveip \
-	+PACKAGE_luci-app-shadowsocks:ChinaDNS-C))
+	+PACKAGE_luci-app-shadowsocks:ChinaDNS))
 
 $(eval $(call application,redsocks2,LuCI Support for redsocks2,\
 	+PACKAGE_luci-app-redsocks2:redsocks2 \
