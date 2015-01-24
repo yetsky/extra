@@ -35,6 +35,11 @@ start()
 
 stop()
 {
+	uci del dhcp.@dnsmasq[-1].server
+	uci set dhcp.@dnsmasq[-1].noresolv=1
+	uci add_list dhcp.@dnsmasq[-1].server=114.114.114.114#53
+	uci commit dhcp
+	/etc/init.d/dnsmasq restart
 	[ -f $PIDFILE ] && {
 		kill -9 `cat $PIDFILE`
 		rm $PIDFILE
