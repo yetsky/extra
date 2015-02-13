@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ChinaDNS
-PKG_VERSION:=1.2.2
+PKG_VERSION:=1.3.0
 PKG_RELEASE=$(PKG_SOURCE_VERSION)
 
 PKG_SOURCE_URL:=https://github.com/clowwindy/ChinaDNS/releases/download/$(PKG_VERSION)
@@ -33,13 +33,11 @@ A DNS forwarder that ignores incorrect(you knew it) responses.
 endef
 
 define Package/ChinaDNS/conffiles
-/etc/chinadns_iplist.txt
 /etc/chinadns_chnroute.txt
 endef
 
 define Package/ChinaDNS/install
 	$(INSTALL_DIR) $(1)/etc
-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/iplist.txt $(1)/etc/chinadns_iplist.txt
 	$(INSTALL_CONF) $(PKG_BUILD_DIR)/chnroute.txt $(1)/etc/chinadns_chnroute.txt
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/chinadns $(1)/usr/bin
