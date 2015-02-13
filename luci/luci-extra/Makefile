@@ -161,7 +161,8 @@ $(eval $(call application,mjpg-streamer,mjpg streamer luci page,\
 	+PACKAGE_luci-app-mjpg-streamer:mjpg-streamer))
 	
 $(eval $(call application,n2n,n2n luci page,\
-	+PACKAGE_luci-app-n2n:n2n-v2))
+	+PACKAGE_luci-app-n2n:n2n \
+	+PACKAGE_luci-app-n2n:n2n_v2))
 
 $(eval $(call application,webshell,webshell configuration module,\
 	 +PACKAGE_luci-app-webshell))
