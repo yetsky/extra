@@ -157,6 +157,9 @@ $(eval $(call application,autossh,LuCI Support for Autossh,\
 $(eval $(call application,xunlei,LuCI Support for xware web UI,\
 	+PACKAGE_luci-app-xunlei:xunlei))
 	
+$(eval $(call application,youku,LuCI Support for Youku UI,\
+	+PACKAGE_luci-app-youku:youku))
+	
 $(eval $(call application,mjpg-streamer,mjpg streamer luci page,\
 	+PACKAGE_luci-app-mjpg-streamer:mjpg-streamer))
 	
