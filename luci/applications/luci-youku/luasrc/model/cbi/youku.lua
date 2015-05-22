@@ -1,36 +1,30 @@
---[[
-LuCI - Lua Configuration Interface
-youku for KOS
-$Id$
-]]--
-local kosqd = luci.http.formvalue("cbi.apply")
+local fs = require "nixio.fs"
 local uci_sn=luci.sys.exec("echo 2115$(cat /sys/class/net/br-lan/address|tr -d ':'|md5sum |tr -dc [0-9]|cut -c 0-12)")
+local yksn=luci.sys.exec("uci get youku.youku.opsn")
 local button = ""
 local sudu = luci.sys.exec("/lib/spd")
 local running = (luci.sys.call("pidof ikuacc > /dev/null") == 0)
 local run = (luci.sys.call("pidof youkudome > /dev/null") == 0)
-local bdsn=luci.sys.exec("getykbdlink 00002115$(cat /sys/class/net/br-lan/address|tr -d ':'|md5sum |tr -dc [0-9]|cut -c 0-12)|sed -e's/&/&amp;/g'")
-local bdzt=luci.sys.exec("wget -O - http://pcdnapi.youku.com/pcdn/user/check_bindinfo?pid=00002115$(cat /sys/class/net/br-lan/address|tr -d ':'|md5sum |tr -dc [0-9]|cut -c 0-12)|grep 'name'|cut -d '\"' -f 16")
-bd_button = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"button\" value=\" " .. translate("绑定优酷帐号") .. " \" onclick=\"window.open('" .. bdsn .. "')\"/>"
+local bdsn=luci.sys.exec("getykbdlink 0000$(uci get youku.youku.opsn)|sed -e's/&/&amp;/g'")
+local bdzt=luci.sys.exec("wget -O - http://pcdnapi.youku.com/pcdn/user/check_bindinfo?pid=0000$(uci get youku.youku.opsn)|grep 'name'|cut -d '\"' -f 16")
+
+bd_button = "<input type=\"button\" value=\" " .. translate("绑定优酷帐号") .. " \" onclick=\"window.open('" .. bdsn .. "')\"/>"
 if running  then
-m = Map("youku", translate("优酷路由宝"), "<p style='text-align:left'>"..translate("正在赚取金币").."<br></br>"..translate("WAN口速率 ")..sudu.."</p>")
+m = Map("youku", translate("优酷路由宝"), "<p style='text-align:left'>"..translate("路由宝正在工作中....").."<br></br>"..translate("WAN口速率 ")..sudu.."</p>")
 else
 if run then
-m = Map("youku", translate("优酷路由宝"), translate("准备赚取金币中..."))
+m = Map("youku", translate("优酷路由宝"), translate("路由宝准备工作在...."))
 else
-m = Map("youku", translate("优酷路由宝"), translate("赚取金币停止中..."))
+m = Map("youku", translate("优酷路由宝"), translate("路由宝已停止工作...."))
 end
 end
 s = m:section(TypedSection, "youku", translate("路由宝<a href=\"http://yjb.youku.com\" target=\"_blank\">  点击进入官方金币平台>></a>"))
 s.anonymous = true
 o = s:option(Flag, "enable", translate("是否启用矿机"))
 o = s:option(ListValue, "oksn", translate("SN途径"))
-o:value("0", translate("根据MAC获得SN"))
 o:value("1", translate("路由宝原版SN"))
-o = s:option(DummyValue,"","<p style='text-align:left'><strong>"..translate("序列号sn: ").."</strong>".."<font color='green'> <strong>" ..uci_sn.."</strong><br></br></font><strong>"..translate("一键绑定: ").."</strong>".."<font color='green'> <strong>" ..bd_button.."</strong><br></br></font><strong>"..translate("绑定状态: ").."</strong>".."<font color='green'> <strong>" ..bdzt.."</strong></font></p>", translate("这个SN根据MAC算出，MAC具有唯一性，所以这SN也具有唯一性。"))
-o:depends({oksn="0"})
---o = s:option(DummyValue,"","<p style='text-align:left'><strong>"..translate("一键绑定: ").."</strong>".."<font color='green'> <strong>" ..bd_button.."</strong></font></p>", translate(""))
---o:depends({oksn="0"})
+o = s:option(DummyValue,"","<p style='text-align:left'><strong>"..translate("序列号sn: ").."</strong>".."<font color='green'> <strong>" ..yksn.."</strong><br></br></font><strong>"..translate("一键绑定: ").."</strong>".."<font color='green'> <strong>" ..bd_button.."</strong><br></br></font><strong>"..translate("绑定状态: ").."</strong>".."<font color='green'> <strong>" ..bdzt.."</strong></font></p>")
+o:depends({oksn="1"})
 
 o = s:option(Value, "opsn", translate("原版SN"))
 o:depends({oksn="1"})

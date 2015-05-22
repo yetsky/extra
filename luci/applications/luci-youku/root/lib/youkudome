@@ -29,12 +29,7 @@ mkdir -p $path/youku/meta
 mkdir -p $path/youku/data
 chmod -R 777 $path/youku
 sleep 2
-wksn="2115$(cat /sys/class/net/br-lan/address|tr -d ':'|md5sum |tr -dc [0-9]|cut -c 0-12)"
-sleep 2
-if [ "$(uci get -q youku.youku.oksn)" -eq "1" ]
-then
 wksn="$(uci get -q youku.youku.opsn)"
-fi
 if [ "$(uci get -q youku.youku.pathhc)" = "" ]
 then
 hc=""
@@ -59,7 +54,7 @@ sleep 5
 if [ -z $(pidof ikuacc) ]
 then
 sleep 5
-ikuacc  --device-serial-number="0000$wksn"  --mobile-meta-path="$path/youku/meta" --mobile-data-path="$path/youku/data$hc"  &
+ikuacc  --device-serial-number="0000$wksn"  --mobile-meta-path="/mnt/mmcblk0p1" --mobile-data-path="/mnt/mmcblk0p3/youku/data:2000;/mnt/mmcblk0p5/youku/data:2000;/mnt/mmcblk0p6/youku/data:2000;/mnt/mmcblk0p7/youku/data:1000;"  &
 sleep 5
 sdt="1"
 fi
