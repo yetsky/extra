@@ -11,15 +11,15 @@ function index()
 		return
 	end
 
-	entry({"admin", "services", "redsocks2"},
-		alias("admin", "services", "redsocks2", "general"),
+	entry({"admin", "gfw", "redsocks2"},
+		alias("admin", "gfw", "redsocks2", "general"),
 		_("Redsocks2"))
 
-	entry({"admin", "services", "redsocks2", "general"},
+	entry({"admin", "gfw", "redsocks2", "general"},
 		cbi("redsocks2/general"),
 		_("General Settings"), 10).leaf = true
 
-	entry({"admin", "services", "redsocks2", "advanced"},
+	entry({"admin", "gfw", "redsocks2", "advanced"},
 		cbi("redsocks2/advanced"),
 		_("Advanced Options"), 20).leaf = true
 

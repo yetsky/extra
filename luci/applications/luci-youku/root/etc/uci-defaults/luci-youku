@@ -1,0 +1,11 @@
+#!/bin/sh
+
+uci -q batch <<-EOF >/dev/null
+	delete ucitrack.@youku[-1]
+	add ucitrack youku
+	set ucitrack.@youku[-1].init=youku
+	commit ucitrack
+EOF
+
+rm -f /tmp/luci-indexcache
+exit 0
