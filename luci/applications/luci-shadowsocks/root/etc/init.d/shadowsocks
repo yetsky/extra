@@ -7,7 +7,7 @@ ss_local_PID_FILE="/var/run/ss-local.pid"
 ss_redir_PID_FILE="/var/run/ss-redir.pid"
 
 ipset_blacklist="/etc/ipset/blacklist"
-ipset_whitelist="/etc/ipset/whitelist"
+ipset_whitelist="/etc/chinadns_chnroute.txt"
 
 start() {
 	# HACK fd

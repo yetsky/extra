@@ -2,6 +2,7 @@
  Redsocks2 基础配置页面
  Copyright (C) 2015 GuoGuo <gch981213@gmail.com>
 ]]--
+local fs = require "nixio.fs"
 
 m = Map("redsocks2", translate("Redsocks2 - General Settings"),
 	translatef("A modified version of redsocks.Beside the basic function of redsocks,it can redirect TCP connections which are blocked via proxy automatically without a blacklist.")
@@ -142,11 +143,33 @@ o.rmempty = false
 o = s:option(Value, "ipset_blacklist", translate("Blacklist Path"))
 o:depends({blacklist_enabled=1})
 
-o = s:option(Flag, "whitelist_enabled", translate("Enable Whitelist"), translate("Specify destination IP addresses which won't be redirect to redsocks2."))
-o.rmempty = false
+o = s:option(Flag, "whitelist_enabled", translate("Bypass IP Whitelist"))
+o.default = false
 
 o = s:option(Value, "ipset_whitelist", translate("Whitelist Path"))
 o:depends({whitelist_enabled=1})
+
+whitelist = s:option(TextValue, "whitelist", " ", "")
+whitelist.template = "cbi/tvalue"
+whitelist.size = 30
+whitelist.rows = 10
+whitelist.wrap = "off"
+whitelist:depends("whitelist_enabled", 1)
+
+function whitelist.cfgvalue(self, section)
+	return fs.readfile("/etc/chinadns_chnroute.txt") or ""
+end
+function whitelist.write(self, section, value)
+	if value then
+		value = value:gsub("\r\n?", "\n")
+		fs.writefile("/tmp/whitelist", value)
+		fs.mkdirr("/etc/ipset")
+		if (fs.access("/etc/chinadns_chnroute.txt") ~= true or luci.sys.call("cmp -s /tmp/whitelist /etc/chinadns_chnroute.txt") == 1) then
+			fs.writefile("/etc/chinadns_chnroute.txt", value)
+		end
+		fs.remove("/tmp/whitelist")
+	end
+end
 
 o = s:option(Value, "dest_port", translate("Destination Port"))
 o.datatype = "uinteger"
