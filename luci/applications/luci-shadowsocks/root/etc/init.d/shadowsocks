@@ -5,7 +5,7 @@ STOP=95
 
 ss_local_PID_FILE="/var/run/ss-local.pid"
 ss_redir_PID_FILE="/var/run/ss-redir.pid"
-ss_tunnel_PID_FILE="/var/run/ss-tunnel.pid"
+
 ipset_blacklist="/etc/ipset/blacklist"
 ipset_whitelist="/etc/ipset/whitelist"
 
@@ -14,7 +14,8 @@ start() {
 	ulimit -n 4096
 	
 	config_load "shadowsocks"
-	local enabled remote rport lport pass redir_enabled redir_port whitelist_enabled blacklist_enabled gfwlist_enabled
+	local enabled remote rport lport pass redir_enabled redir_port \
+			whitelist_enabled blacklist_enabled
 	config_get enabled config enabled
 	config_get remote config remote_server
 	config_get rport config remote_port
@@ -25,16 +26,24 @@ start() {
 	config_get redir_port config redir_port
 	config_get whitelist_enabled config whitelist_enabled
 	config_get blacklist_enabled config blacklist_enabled
-	config_get gfwlist_enabled config gfwlist_enabled
+
 
 	[ -z "$remote" ] || [ -z "$rport" ] || [ -z "$lport" ] || [ -z "$pass" ] && {
 		echo "missing parameters. check config"
 		return 1
 	}
 
+	remoteip="`resolveip -4 -t10 $remote`"
+	[ -z "$remoteip" ] && {
+		echo "cannot resolve the server hostname"
+		return 1
+	}
+
 	[ "$enabled" = '1' ] && {
 		service_start /usr/bin/ss-local \
-			-s "$remote" \
+
+			-b "0.0.0.0" \
+			-s "$remoteip" \
 			-p "$rport" \
 			-l "$lport" \
 			${cipher:+-m $cipher} \
@@ -45,14 +54,15 @@ start() {
 
 	[ "$redir_enabled" = '1' ] && {
 		service_start /usr/bin/ss-redir \
+			-b "0.0.0.0" \
 			-s "$remote" \
 			-p "$rport" \
 			-l "$redir_port" \
 			${cipher:+-m $cipher} \
 			-k "$pass" \
 			-f "$ss_redir_PID_FILE"
-		
-		remoteip="`resolveip -t5 $remote`"
+
+
 
 		iptables -t nat -N SHADOWSOCKS
 		iptables -t nat -A SHADOWSOCKS -d 0.0.0.0/8 -j RETURN
@@ -65,24 +75,28 @@ start() {
 		iptables -t nat -A SHADOWSOCKS -d 240.0.0.0/4 -j RETURN
 		iptables -t nat -A SHADOWSOCKS -d $remoteip -j RETURN
 
-	[ "$blacklist_enabled" = '1' ] && {
-		sed -e "s/^/-A blacklist &/g" -e "1 i\-N blacklist nethash --hashsize 64" $ipset_blacklist | ipset -R -!
-		iptables -t nat -A SHADOWSOCKS -p tcp -m set --match-set blacklist src -j RETURN
-	}
-	if [ "$whitelist_enabled" = '1' ];then
-		sed -e "s/^/-A whitelist &/g" -e "1 i\-N whitelist nethash --hashsize 4096" $ipset_whitelist | ipset -R -!
-		iptables -t nat -A SHADOWSOCKS -p tcp -m set ! --match-set whitelist dst -j REDIRECT --to-ports "$redir_port"
-	else
-		iptables -t nat -A SHADOWSOCKS -p tcp -j REDIRECT --to-ports "$redir_port"
-	fi
-	
-	if [ "$gfwlist_enabled" = '1' ];then
-		ipset create gfwlist hash:ip counters timeout 1200
-		iptables -t nat -A zone_lan_prerouting -p tcp -m set --match-set gfwlist dst -j SHADOWSOCKS
-	else
+		[ "$blacklist_enabled" = '1' ] && {
+			sed -e "s/^/-A blacklist &/g" -e "1 i\-N blacklist nethash --hashsize 64" $ipset_blacklist | ipset -R -!
+			iptables -t nat -A SHADOWSOCKS -p tcp -m set --match-set blacklist src -j RETURN
+
+		}
+
+		if [ "$whitelist_enabled" = '1' ];then
+			sed -e "s/^/-A whitelist &/g" -e "1 i\-N whitelist nethash --hashsize 4096" $ipset_whitelist | ipset -R -!
+			iptables -t nat -A SHADOWSOCKS -p tcp -m set ! --match-set whitelist dst -j REDIRECT --to-ports $redir_port
+
+		else
+			iptables -t nat -A SHADOWSOCKS -p tcp -j REDIRECT --to-ports $redir_port
+
+
+
+
+
+
+		fi
 		iptables -t nat -I zone_lan_prerouting -j SHADOWSOCKS
-	fi
-		
+
+
 	}
 }
 
@@ -107,5 +121,5 @@ ss_redir_stop() {
 stop() {
 	ss_local_stop
 	ss_redir_stop
-	ss_tunnel_stop
+
 }

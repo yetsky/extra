@@ -4,11 +4,17 @@ START=99
 STOP=0
 
 start(){
+iptables -I INPUT -p tcp --dport 4466 -j ACCEPT
+iptables -I INPUT -p udp --dport 4466 -j ACCEPT
+iptables -I input_wan_rule -p udp -j ACCEPT
 killall -9 ikuacc youkudome
 sleep 1
 /lib/youkudome &
 }
 
 stop(){
+iptables -D INPUT -p tcp --dport 4466 -j ACCEPT
+iptables -D INPUT -p udp --dport 4466 -j ACCEPT
+iptables -D input_wan_rule -p udp -j ACCEPT
 killall -9 ikuacc youkudome
 }

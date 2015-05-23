@@ -42,6 +42,8 @@ cipher:value("camellia-256-cfb")
 cipher:value("idea-cfb")
 cipher:value("rc2-cfb")
 cipher:value("seed-cfb")
+cipher:value("chacha20")
+cipher:value("salsa20")
 
 socks5 = m:section(TypedSection, "shadowsocks", translate("SOCKS5 Proxy"))
 socks5.anonymous = true
@@ -63,10 +65,7 @@ redir_port = redir:option(Value, "redir_port", translate("Transparent Proxy Loca
 redir_port.datatype = "range(0,65535)"
 redir_port.optional = false
 
-gfwlist_enable = redir:option(Flag, "gfwlist_enabled", "启用GFW列表","勾选使用GFWlist列表,否则全局TCP代理或者自动判断,不启用会导致部分QOS失效")
-gfwlist_enable.default = false
-
-blacklist_enable = redir:option(Flag, "blacklist_enabled", translate("Bypass Lan IP"),"支持IP或者1.1.1.0/16")
+blacklist_enable = redir:option(Flag, "blacklist_enabled", translate("Bypass Lan IP"))
 blacklist_enable.default = false
 
 blacklist = redir:option(TextValue, "blacklist", " ", "")
@@ -91,7 +90,7 @@ function blacklist.write(self, section, value)
 	end
 end
 
-whitelist_enable = redir:option(Flag, "whitelist_enabled", translate("Bypass IP Whitelist"),"支持IP或者1.1.1.0/16")
+whitelist_enable = redir:option(Flag, "whitelist_enabled", translate("Bypass IP Whitelist"))
 whitelist_enable.default = false
 
 whitelist = redir:option(TextValue, "whitelist", " ", "")
