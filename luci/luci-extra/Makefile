@@ -104,13 +104,16 @@ $(eval $(call application,shadowsocks,LuCI Support for shadowsocks,\
 	+PACKAGE_luci-app-shadowsocks:resolveip \
 	+PACKAGE_luci-app-shadowsocks:ChinaDNS))
 
-$(eval $(call application,redsocks2,LuCI Support for redsocks2,\
-	+PACKAGE_luci-app-redsocks2:redsocks2 \
-	+PACKAGE_luci-app-redsocks2:kmod-ipt-nat \
-	+PACKAGE_luci-app-redsocks2:kmod-ipt-nat-extra \
-	+PACKAGE_luci-app-redsocks2:kmod-ipt-ipset \
-	+PACKAGE_luci-app-redsocks2:ipset \
-	+PACKAGE_luci-app-shadowsocks:resolveip))
+#$(eval $(call application,redsocks2,LuCI Support for redsocks2,\
+#	+PACKAGE_luci-app-redsocks2:redsocks2 \
+#	+PACKAGE_luci-app-redsocks2:kmod-ipt-nat \
+#	+PACKAGE_luci-app-redsocks2:kmod-ipt-nat-extra \
+#	+PACKAGE_luci-app-redsocks2:kmod-ipt-ipset \
+#	+PACKAGE_luci-app-redsocks2:ipset \
+#	+PACKAGE_luci-app-shadowsocks:resolveip))
+	
+$(eval $(call application,dns2socks,LuCI Support for dns2socks,\
+	+PACKAGE_luci-app-dns2socks:dns2socks))
 
 $(eval $(call application,ser2net,ser2net - Serial to network module,\
 	+PACKAGE_luci-app-ser2net:ser2net))
