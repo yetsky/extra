@@ -1,41 +1,15 @@
 #!/bin/sh
 sleep 20
-path=$(uci get -q youku.youku.path)
-sleep 2
 if [ "$(uci get -q youku.youku.enable)" -eq "0" ]
 then
 killall -9 ikuacc
 exit 0
 fi
 sleep 2
-if [ -z $path ]
-then
-path=$(df|grep '/mnt/'|awk '{print$6}'|head -n 1)
-if [ -z $path ]
-then
-path=$(df|grep '/mnt/'|awk '{print$5}'|head -n 1)
-if [ -z $path ]
-then
-path=$(df -h|grep 'G'|awk '{print$6}'|head -n 1)
-if [ -z $path ]
-then
-killall -9 ikuacc
-exit 0
-fi 
-fi
-fi
-fi
-mkdir -p $path/youku/meta
-mkdir -p $path/youku/data
-chmod -R 777 $path/youku
-sleep 2
 wksn="$(uci get -q youku.youku.opsn)"
-if [ "$(uci get -q youku.youku.pathhc)" = "" ]
-then
-hc=""
-else
-hc=":$(uci get -q youku.youku.pathhc)"
-fi
+pathmeta=$(uci get -q youku.youku.pathmeta)
+path=$(uci get -q youku.youku.path)
+
   while true
 do
 sleep 20
@@ -54,7 +28,7 @@ sleep 5
 if [ -z $(pidof ikuacc) ]
 then
 sleep 5
-ikuacc  --device-serial-number="0000$wksn"  --mobile-meta-path="/mnt/mmcblk0p1" --mobile-data-path="/mnt/mmcblk0p3/youku/data:2000;/mnt/mmcblk0p5/youku/data:2000;/mnt/mmcblk0p6/youku/data:2000;/mnt/mmcblk0p7/youku/data:1000;"  &
+ikuacc  --device-serial-number="0000$wksn"  --mobile-meta-path="$pathmeta" --mobile-data-path="$path"  &
 sleep 5
 sdt="1"
 fi
