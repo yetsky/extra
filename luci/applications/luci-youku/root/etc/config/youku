@@ -4,6 +4,5 @@ config youku 'youku'
 	option oksn '1'
 	option pathmeta '/mnt/sda1'
 	option opsn '2110000000000000'
-	option path '/mnt/sda1/youku:2000;'
 	option enable '0'
 

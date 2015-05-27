@@ -1,41 +1,85 @@
 #!/bin/sh
 sleep 20
-if [ "$(uci get -q youku.youku.enable)" -eq "0" ]
-then
-killall -9 ikuacc
-exit 0
-fi
-sleep 2
-wksn="$(uci get -q youku.youku.opsn)"
+path=$(uci get -q youku.@path[0].path)
 pathmeta=$(uci get -q youku.youku.pathmeta)
-path=$(uci get -q youku.youku.path)
-
-  while true
-do
-sleep 20
-if [ "$(uci get -q youku.youku.cqboot)" -eq "$(date +%H%M)" ]
-then
-sleep 30
-if [ "$(uci get -q youku.youku.ikrebot)" -eq "1" ]
-then
-killall ikuacc
-sleep 3
-else
-reboot
-fi
-fi
-sleep 5
-if [ -z $(pidof ikuacc) ]
-then
-sleep 5
-ikuacc  --device-serial-number="0000$wksn"  --mobile-meta-path="$pathmeta" --mobile-data-path="$path"  &
-sleep 5
-sdt="1"
-fi
-if [ "$sdt" -eq "1" ]
-then
-wget -O - 'http://127.0.0.1:8908/peer/limit/network/set?upload_model='"$(uci get -q youku.youku.wkmod)" > /dev/null 2>&1
 sleep 2
-sdt="0"
+
+if [ "$(uci get -q youku.youku.enable)" = "0" ]
+then
+	killall -9 ikuacc
+	exit 0
 fi
+
+sleep 2
+
+if [ "$path" = "" ]
+then
+	killall -9 ikuacc
+	exit 0
+fi 
+
+sleep 2
+
+wksn="$(uci get -q youku.youku.opsn)"
+
+if [ "$(uci get -q youku.@path[0].pathhc)" = "" ]
+then
+	hc=""
+else
+	hc=":$(uci get -q youku.@path[0].pathhc)"
+fi
+
+i=1
+str="--device-serial-number="0000$wksn" --mobile-meta-path="$pathmeta" --mobile-data-path="$path/youku/data$hc""
+
+while [ "$(uci get -q youku.@path[$i].path)" != "" ]
+do
+	if [ $(uci get -q youku.@path[$i].pathhc) != "" ]
+	then
+		hc=":$(uci get -q youku.@path[$i].pathhc)"
+	else
+		hc=""
+	fi
+	str=$str";"$(uci get -q youku.@path[$i].path)/youku/data$hc""
+	i=$(($i+1))
 done
+
+while true
+do
+	sleep 20
+	if [ "$(uci get -q youku.youku.cqboot)" = "$(date +%H%M)" ]
+	then
+		sleep 30
+		if [ "$(uci get -q youku.youku.ikrebot)" = "1" ]
+		then
+			killall ikuacc
+			sleep 3
+		else
+			reboot
+		fi
+	fi
+	sleep 5
+
+	if [ "$(uci get -q youku.youku.enable)" = "1" ]
+	then
+		if [ "$(pidof ikuacc)" = "" ]
+		then
+			sleep 5
+			ikuacc  $str  &
+			sleep 5
+			sdt="1"
+		fi
+	fi
+	if [ "$sdt" = "1" ]
+	then
+		wget -O - 'http://127.0.0.1:8908/peer/limit/network/set?upload_model='"$(uci get -q youku.youku.wkmod)" > /dev/null 2>&1
+		sleep 2
+		sdt="0"
+	fi
+	if [ "$(uci get -q youku.youku.enable)" = "0" ]
+	then
+		killall -9 ikuacc
+		exit 0
+	fi
+done
+

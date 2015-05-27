@@ -161,7 +161,12 @@ $(eval $(call application,xunlei,LuCI Support for xware web UI,\
 	+PACKAGE_luci-app-xunlei:xunlei))
 	
 $(eval $(call application,youku,LuCI Support for Youku UI,\
-	+PACKAGE_luci-app-youku:youku))
+	+PACKAGE_luci-app-youku:youku \
+	+PACKAGE_luci-app-youku:libc \
+	+PACKAGE_luci-app-youku:libpthread \
+	+PACKAGE_luci-app-youku:libstdcpp \
+	+PACKAGE_luci-app-youku:libthread-db \
+	+PACKAGE_luci-app-youku:librt))
 	
 $(eval $(call application,mjpg-streamer,mjpg streamer luci page,\
 	+PACKAGE_luci-app-mjpg-streamer:mjpg-streamer))
