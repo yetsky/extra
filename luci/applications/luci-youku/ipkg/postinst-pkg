@@ -1,0 +1,4 @@
+[ -n "${IPKG_INSTROOT}" ] || {
+	(. /etc/uci-defaults/luci-youku) && rm -f /etc/uci-defaults/luci-youku
+	exit 0
+}
